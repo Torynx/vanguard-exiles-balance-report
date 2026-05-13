@@ -50,6 +50,14 @@
     h2 { margin: 34px 0 12px; font-size: 1.5rem; }
     h3 { margin: 18px 0 8px; font-size: 1.1rem; }
     p { max-width: 86ch; }
+    a {
+      color: #075985;
+      font-weight: 700;
+    }
+    a:focus-visible {
+      outline: 3px solid #fbbf24;
+      outline-offset: 2px;
+    }
     .summary {
       display: grid;
       gap: 14px;
@@ -205,6 +213,7 @@
     <p>This report summarizes simulated one-zone melee matchup data across the available stat states and asks how globally balanced the units appear across 1v1, 2v2, 3v3, 4v4, and 6v6 repeated-unit fights.</p>
     <p><strong>Update note:</strong> This is a re-release of the balance dataset after adding the current patch unit stats and rerunning the simulations.</p>
     <p><strong>Generation note:</strong> The matchup results were generated with a Python-based Vanguard Exiles simulator, organized in the balance spreadsheet, and summarized into this HTML report with agentic AI assistance.</p>
+    <p><strong>Workbook:</strong> <a href="vanguard-exiles-balance-workbook.xlsx" download>Download the sanitized balance workbook (.xlsx)</a>.</p>
   </header>
 
   <section aria-labelledby="exec-summary">
@@ -1001,7 +1010,7 @@
   </section>
 
   <footer>
-    Source workbook: basic-rebalance-formatted-dashboard.xlsx. Formula scan at extraction time: {&quot;kind&quot;:&quot;notice&quot;,&quot;message&quot;:&quot;Cell search matched 0 entries.&quot;}.
+    Source workbook: <a href="vanguard-exiles-balance-workbook.xlsx" download>vanguard-exiles-balance-workbook.xlsx</a>. Formula scan at extraction time: {&quot;kind&quot;:&quot;notice&quot;,&quot;message&quot;:&quot;Cell search matched 0 entries.&quot;}.
   </footer>
 </main>
 </body>
