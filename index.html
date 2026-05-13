@@ -1,0 +1,1008 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Vanguard Exiles Balance Executive Summary</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --text: #111827;
+      --muted: #4b5563;
+      --line: #cbd5e1;
+      --surface: #ffffff;
+      --band: #f6f8fb;
+      --header: #e8f1f7;
+      --good: #0f766e;
+      --warn: #a16207;
+      --bad: #b91c1c;
+      --ink: #0f172a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f8fafc;
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+    main {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+    header.report-header {
+      border-bottom: 2px solid var(--line);
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+    }
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { color: var(--ink); line-height: 1.15; letter-spacing: 0; }
+    h1 { margin: 0 0 10px; font-size: 2.25rem; }
+    h2 { margin: 34px 0 12px; font-size: 1.5rem; }
+    h3 { margin: 18px 0 8px; font-size: 1.1rem; }
+    p { max-width: 86ch; }
+    .summary {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin: 20px 0 24px;
+    }
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      min-height: 124px;
+    }
+    .kpi .label {
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .kpi .value {
+      color: var(--ink);
+      font-size: clamp(1.15rem, 2vw, 1.75rem);
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .kpi .note {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin: 0;
+    }
+    section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin: 20px 0;
+      padding: 20px;
+    }
+    .callout {
+      border-left: 5px solid var(--bad);
+      background: #fff7ed;
+      padding: 12px 14px;
+      margin: 14px 0;
+    }
+    .grid-two {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+    caption {
+      text-align: left;
+      font-weight: 800;
+      padding: 12px 14px;
+      background: var(--header);
+      color: var(--ink);
+      border-bottom: 1px solid var(--line);
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: middle;
+      font-size: 0.94rem;
+    }
+    thead th {
+      background: var(--header);
+      color: var(--ink);
+      font-weight: 800;
+    }
+    tbody tr:nth-child(even) { background: var(--band); }
+    tbody tr:last-child td, tbody tr:last-child th { border-bottom: 0; }
+    .bar-wrap {
+      position: relative;
+      display: block;
+      min-width: 132px;
+      height: 24px;
+      background: #eef2f7;
+      border: 1px solid #d8dee8;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .bar {
+      display: block;
+      height: 100%;
+    }
+    .bar-good { background: #99d8ca; }
+    .bar-warn { background: #fde68a; }
+    .bar-bad { background: #fecaca; }
+    .bar-neutral { background: #bfdbfe; }
+    .bar-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 0.84rem;
+    }
+    .tag {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 9px;
+      background: #f8fafc;
+      color: var(--ink);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .list-compact {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+    .list-compact li { margin: 7px 0; }
+    .good-text { color: var(--good); font-weight: 800; }
+    .warn-text { color: var(--warn); font-weight: 800; }
+    .bad-text { color: var(--bad); font-weight: 800; }
+    footer {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 24px;
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+    }
+    @media (max-width: 900px) {
+      .summary, .grid-two { grid-template-columns: 1fr; }
+      h1 { font-size: 1.8rem; }
+      main { padding: 22px 12px 40px; }
+    }
+    @media print {
+      body { background: white; }
+      main { max-width: none; padding: 0; }
+      section, .kpi { break-inside: avoid; }
+      .table-wrap { overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header class="report-header">
+    <p class="eyebrow">Vanguard Exiles Community Balance Report</p>
+    <h1>Simulator-Based Unit Balance Summary</h1>
+    <p>This report summarizes simulated one-zone melee matchup data across the available stat states and asks how globally balanced the units appear across 1v1, 2v2, 3v3, 4v4, and 6v6 repeated-unit fights.</p>
+    <p><strong>Update note:</strong> This is a re-release of the balance dataset after adding the current patch unit stats and rerunning the simulations.</p>
+    <p><strong>Generation note:</strong> The matchup results were generated with a Python-based Vanguard Exiles simulator, organized in the balance spreadsheet, and summarized into this HTML report with agentic AI assistance.</p>
+  </header>
+
+  <section aria-labelledby="exec-summary">
+    <h2 id="exec-summary">Executive Summary</h2>
+    <p>In this simulator-based dataset, the current main patch, <strong>Main v0.3.11.4021</strong>, scores as the most polarized state in the workbook. It has the lowest average Balance Score, the lowest playable-matchup rate, and the highest stomp rate. <strong>Nodnarb21's proposed unlimited unit stats</strong> is the healthiest profile by this metric set.</p>
+    <div class="summary" aria-label="Current patch key balance metrics">
+      <article class="kpi">
+        <div class="label">Current Balance Score</div>
+        <div class="value bad-text">13.3</div>
+        <p class="note">Lowest of 4 compared states.</p>
+      </article>
+      <article class="kpi">
+        <div class="label">Playable Matchups</div>
+        <div class="value bad-text">4.8%</div>
+        <p class="note">Only broad 35-65 win-rate matchups count as playable.</p>
+      </article>
+      <article class="kpi">
+        <div class="label">Stomp Matchups</div>
+        <div class="value bad-text">76.2%</div>
+        <p class="note">90/10 or worse outcomes dominate the current patch.</p>
+      </article>
+      <article class="kpi">
+        <div class="label">Best Scoring Profile</div>
+        <div class="value good-text">Nodnarb21's proposed unlimited unit stats</div>
+        <p class="note">Balance Score 36.6, stomp rate 42.9%.</p>
+      </article>
+    </div>
+    <div class="callout">
+      <strong>Primary observation:</strong> current main appears structurally polarized in this simulator model. Hammer is a persistent high-power outlier, Ranger is a persistent low-power outlier, and Acolyte creates large team-size-dependent reversals.
+    </div>
+  </section>
+  <section aria-labelledby="ranking">
+    <h2 id="ranking">State Ranking</h2>
+    <p>The ranking uses average Balance Score as the primary sort, then checks playable matchup rate, stomp rate, power spread, and power standard deviation for consistency. These results should be read as model evidence and balance-discussion inputs, not as a replacement for live-game data, design intent, player skill, map context, or developer judgment.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Overall balance ranking by stat state</caption>
+        <thead>
+          <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">State</th>
+            <th scope="col">Balance Score</th>
+            <th scope="col">Playable %</th>
+            <th scope="col">Stomp %</th>
+            <th scope="col">Power Spread</th>
+            <th scope="col">Power StdDev</th>
+            <th scope="col">Reading</th>
+          </tr>
+        </thead>
+        <tbody>
+    <tr>
+      <td>1</td>
+      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="36.6">
+      <span class="bar bar-good" style="width:73.20%"></span>
+      <span class="bar-label">36.6</span>
+    </div></td>
+      <td>27.6%</td>
+      <td>42.9%</td>
+      <td>0.662</td>
+      <td>0.205</td>
+      <td>Best overall balance score among compared states.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <th scope="row">Low Median</th>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="33.7">
+      <span class="bar bar-warn" style="width:67.40%"></span>
+      <span class="bar-label">33.7</span>
+    </div></td>
+      <td>21.9%</td>
+      <td>47.6%</td>
+      <td>0.778</td>
+      <td>0.272</td>
+      <td>Reference balance state.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <th scope="row">Main pre-v0.3.3</th>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="17.7">
+      <span class="bar bar-bad" style="width:35.40%"></span>
+      <span class="bar-label">17.7</span>
+    </div></td>
+      <td>5.7%</td>
+      <td>69.5%</td>
+      <td>0.842</td>
+      <td>0.293</td>
+      <td>Reference balance state.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <th scope="row">Main v0.3.11.4021</th>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="13.3">
+      <span class="bar bar-bad" style="width:26.60%"></span>
+      <span class="bar-label">13.3</span>
+    </div></td>
+      <td>4.8%</td>
+      <td>76.2%</td>
+      <td>0.914</td>
+      <td>0.293</td>
+      <td>Current patch has the lowest average balance score and highest stomp percent.</td>
+    </tr></tbody>
+      </table>
+    </div>
+  </section>
+  <section aria-labelledby="three-way-comparison">
+    <h2 id="three-way-comparison">Three-Way Comparison: Earlier Main, Current Main, and Nodnarb21's Proposal</h2>
+    <p>Across the three most relevant stat states, the current patch is the most polarized profile in this simulator. The earlier main state was already uneven, but the current patch moves further away from global parity, while Nodnarb21's proposed unlimited unit stats produce the strongest overall balance profile.</p>
+    <h3>Current Patch vs. Earlier Main</h3>
+    <p>Compared with <strong>Main pre-v0.3.3</strong>, the current patch moves in the wrong direction on the headline simulator metrics: Balance Score drops by 4.4 points, playable matchups drop by 0.9 percentage points, stomp matchups rise by 6.7 percentage points, and power spread increases from 0.842 to 0.914. Hammer remains the recurring high-end pressure point, while the common weakest unit shifts from Zombie to Ranger.</p>
+    <h3>Current Patch vs. Nodnarb21's Proposed Unlimited Unit Stats</h3>
+    <p>Compared with <strong>Nodnarb21's proposed unlimited unit stats</strong>, current main is substantially more polarized. Nodnarb21's profile improves Balance Score by 23.3 points, raises playable matchups by 22.8 percentage points, reduces stomp matchups by 33.3 percentage points, and narrows power spread by 0.252. That makes it the clearest comparison profile in this dataset for discussing what a less polarized stat set could look like.</p>
+  </section>
+  <section aria-labelledby="unit-analysis">
+    <h2 id="unit-analysis">Current Patch Unit Analysis</h2>
+    <p>Current main has a severe top-bottom split. Hammer wins nearly everything, Ranger loses nearly everything, and several mid-pack units are more matchup-polarized than their average power suggests.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Current patch unit ranking</caption>
+        <thead>
+          <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">Unit</th>
+            <th scope="col">Tier</th>
+            <th scope="col">Average Power</th>
+            <th scope="col">6v6 - 1v1</th>
+            <th scope="col">Volatility</th>
+            <th scope="col">Fav / Even / Unfav</th>
+            <th scope="col">Stomps For / Against</th>
+            <th scope="col">Interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>1</td>
+        <th scope="row">Hammer</th>
+        <td><span class="tag">Overperforming</span></td>
+        <td>
+    <div class="bar-wrap" role="img" aria-label="0.939">
+      <span class="bar bar-bad" style="width:93.90%"></span>
+      <span class="bar-label">0.939</span>
+    </div></td>
+        <td>-0.110</td>
+        <td>0.136</td>
+        <td>29 / 0 / 1</td>
+        <td>24 / 0</td>
+        <td>Hammer is the clearest high-end outlier in this simulator and dominates across nearly every current-patch matchup.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <th scope="row">ElfScout</th>
+        <td><span class="tag">Overperforming</span></td>
+        <td>
+    <div class="bar-wrap" role="img" aria-label="0.771">
+      <span class="bar bar-bad" style="width:77.10%"></span>
+      <span class="bar-label">0.771</span>
+    </div></td>
+        <td>-0.191</td>
+        <td>0.324</td>
+        <td>23 / 0 / 7</td>
+        <td>18 / 1</td>
+        <td>ElfScout appears globally high power in this simulator and is worth reviewing before broad buffs.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <th scope="row">Nail</th>
+        <td><span class="tag">Polarized</span></td>
+        <td>
+    <div class="bar-wrap" role="img" aria-label="0.585">
+      <span class="bar bar-good" style="width:58.50%"></span>
+      <span class="bar-label">0.585</span>
+    </div></td>
+        <td>-0.145</td>
+        <td>0.455</td>
+        <td>17 / 0 / 13</td>
+        <td>15 / 10</td>
+        <td>Nail is counter-polarized; average power hides sharp matchup swings.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <th scope="row">Skeleton</th>
+        <td><span class="tag">Polarized</span></td>
+        <td>
+    <div class="bar-wrap" role="img" aria-label="0.421">
+      <span class="bar bar-good" style="width:42.10%"></span>
+      <span class="bar-label">0.421</span>
+    </div></td>
+        <td>-0.167</td>
+        <td>0.475</td>
+        <td>12 / 1 / 17</td>
+        <td>12 / 16</td>
+        <td>Skeleton is counter-polarized; average power hides sharp matchup swings.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <th scope="row">Zombie</th>
+        <td><span class="tag">Polarized</span></td>
+        <td>
+    <div class="bar-wrap" role="img" aria-label="0.409">
+      <span class="bar bar-good" style="width:40.90%"></span>
+      <span class="bar-label">0.409</span>
+    </div></td>
+        <td>+0.087</td>
+        <td>0.395</td>
+        <td>12 / 0 / 18</td>
+        <td>6 / 12</td>
+        <td>Zombie sits closer to the middle than the major outliers.</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <th scope="row">Acolyte</th>
+        <td><span class="tag">Scale-sensitive</span></td>
+        <td>
+    <div class="bar-wrap" role="img" aria-label="0.350">
+      <span class="bar bar-good" style="width:35.00%"></span>
+      <span class="bar-label">0.350</span>
+    </div></td>
+        <td>+0.596</td>
+        <td>0.402</td>
+        <td>11 / 1 / 18</td>
+        <td>5 / 15</td>
+        <td>Acolyte gains heavily with team size; review larger fights separately from small fights.</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <th scope="row">Ranger</th>
+        <td><span class="tag">Underperforming</span></td>
+        <td>
+    <div class="bar-wrap" role="img" aria-label="0.025">
+      <span class="bar bar-warn" style="width:2.50%"></span>
+      <span class="bar-label">0.025</span>
+    </div></td>
+        <td>-0.070</td>
+        <td>0.052</td>
+        <td>0 / 0 / 30</td>
+        <td>0 / 26</td>
+        <td>Ranger appears globally low power in this simulator and is worth reviewing for matchup-specific support.</td>
+      </tr></tbody>
+      </table>
+    </div>
+  </section>
+  <section aria-labelledby="methodology">
+    <h2 id="methodology">Methodology</h2>
+    <p>The balance framework measures more than average win rate. It looks for broadly playable matchups, fewer extreme stomp outcomes, smaller strongest-to-weakest gaps, and lower unit power dispersion.</p>
+    <p>Simulation inputs came from the stat-state configurations represented in the workbook. The Python simulator ran repeated-unit one-zone melee fights for each unit pair and team size, producing win-rate matrices that were then converted into the balance metrics below.</p>
+    <p><strong>Important limitation:</strong> This simulation does not cover real-world match scenarios and should only be used as a measuring stick for controlled unit-stat pressure. Rangers are not designed to be used in melee combat, so Ranger results should be read with that context rather than as a full judgment of live-game Ranger usefulness. The model also does not capture every live-game factor such as player decision-making, board state, positioning beyond the modeled setup, or future design goals.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Metric definitions</caption>
+        <thead>
+          <tr>
+            <th scope="col">Metric</th>
+            <th scope="col">Calculation</th>
+            <th scope="col">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+    <tr>
+      <th scope="row">Balance Score</th>
+      <td>Average of 1 - 2 * absolute(winrate - 0.5), multiplied by 100 across unordered pairs.</td>
+      <td>Standard pairwise fairness score adapted to win-rate matrices.</td>
+    </tr>
+    <tr>
+      <th scope="row">Playable %</th>
+      <td>Percent of unordered matchups with winrate from 0.35 to 0.65.</td>
+      <td>Wider than Close % because not every matchup needs to be exactly even.</td>
+    </tr>
+    <tr>
+      <th scope="row">Close %</th>
+      <td>Percent of unordered matchups with winrate from 0.45 to 0.55.</td>
+      <td>Strict balance band.</td>
+    </tr>
+    <tr>
+      <th scope="row">Stomp %</th>
+      <td>Percent of unordered matchups with winrate at 0.10 or lower, or 0.90 or higher.</td>
+      <td>Lower is better.</td>
+    </tr>
+    <tr>
+      <th scope="row">Power Spread</th>
+      <td>Strongest unit power index minus weakest unit power index within one size block.</td>
+      <td>Lower is better for global unit parity.</td>
+    </tr>
+    <tr>
+      <th scope="row">Power StdDev</th>
+      <td>Population standard deviation of unit power indices within one size block.</td>
+      <td>Lower is better.</td>
+    </tr>
+    <tr>
+      <th scope="row">Power Index</th>
+      <td>Average winrate for one unit across all non-mirror opponents.</td>
+      <td>Shown per unit and per team size.</td>
+    </tr>
+    <tr>
+      <th scope="row">Scaling Delta</th>
+      <td>Unit 6v6 power index minus its 1v1 power index.</td>
+      <td>Large absolute values indicate size sensitivity.</td>
+    </tr></tbody>
+      </table>
+    </div>
+  </section>
+  <section aria-labelledby="matchups">
+    <h2 id="matchups">Most Important Matchup Scaling Risks</h2>
+    <p>Large pair ranges mean that the same unit matchup behaves very differently as team size changes. These are dangerous to tune with a single scalar stat change because the same adjustment can help one size band while making another worse.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Current patch pair swings by team size</caption>
+        <thead>
+          <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">Pair</th>
+            <th scope="col">1v1</th>
+            <th scope="col">3v3</th>
+            <th scope="col">6v6</th>
+            <th scope="col">Range</th>
+            <th scope="col">6v6 - 1v1</th>
+            <th scope="col">Crosses 50%</th>
+            <th scope="col">Reading</th>
+          </tr>
+        </thead>
+        <tbody>
+    <tr>
+      <td>1</td>
+      <th scope="row">Skeleton vs Acolyte</th>
+      <td>1.000</td>
+      <td>0.547</td>
+      <td>0.001</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="0.999">
+      <span class="bar bar-bad" style="width:99.90%"></span>
+      <span class="bar-label">0.999</span>
+    </div></td>
+      <td>-0.999</td>
+      <td>yes</td>
+      <td>Skeleton vs Acolyte changes favored side across team sizes; tune with size-specific caution.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <th scope="row">ElfScout vs Acolyte</th>
+      <td>1.000</td>
+      <td>0.796</td>
+      <td>0.026</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="0.974">
+      <span class="bar bar-bad" style="width:97.40%"></span>
+      <span class="bar-label">0.974</span>
+    </div></td>
+      <td>-0.974</td>
+      <td>yes</td>
+      <td>ElfScout vs Acolyte changes favored side across team sizes; tune with size-specific caution.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <th scope="row">Nail vs Zombie</th>
+      <td>1.000</td>
+      <td>0.431</td>
+      <td>0.265</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="0.735">
+      <span class="bar bar-bad" style="width:73.50%"></span>
+      <span class="bar-label">0.735</span>
+    </div></td>
+      <td>-0.735</td>
+      <td>yes</td>
+      <td>Nail vs Zombie changes favored side across team sizes; tune with size-specific caution.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <th scope="row">Hammer vs Acolyte</th>
+      <td>1.000</td>
+      <td>1.000</td>
+      <td>0.341</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="0.659">
+      <span class="bar bar-bad" style="width:65.90%"></span>
+      <span class="bar-label">0.659</span>
+    </div></td>
+      <td>-0.659</td>
+      <td>yes</td>
+      <td>Hammer vs Acolyte changes favored side across team sizes; tune with size-specific caution.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <th scope="row">Acolyte vs Zombie</th>
+      <td>0.000</td>
+      <td>0.080</td>
+      <td>0.618</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="0.618">
+      <span class="bar bar-bad" style="width:61.80%"></span>
+      <span class="bar-label">0.618</span>
+    </div></td>
+      <td>+0.618</td>
+      <td>yes</td>
+      <td>Acolyte vs Zombie changes favored side across team sizes; tune with size-specific caution.</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <th scope="row">ElfScout vs Zombie</th>
+      <td>1.000</td>
+      <td>0.676</td>
+      <td>0.786</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="0.342">
+      <span class="bar bar-warn" style="width:34.20%"></span>
+      <span class="bar-label">0.342</span>
+    </div></td>
+      <td>-0.214</td>
+      <td>no</td>
+      <td>ElfScout vs Zombie is comparatively stable across team sizes.</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <th scope="row">Ranger vs Acolyte</th>
+      <td>0.189</td>
+      <td>0.017</td>
+      <td>0.000</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="0.189">
+      <span class="bar bar-warn" style="width:18.90%"></span>
+      <span class="bar-label">0.189</span>
+    </div></td>
+      <td>-0.189</td>
+      <td>no</td>
+      <td>Ranger vs Acolyte is comparatively stable across team sizes.</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <th scope="row">Ranger vs Zombie</th>
+      <td>0.191</td>
+      <td>0.047</td>
+      <td>0.004</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="0.187">
+      <span class="bar bar-warn" style="width:18.70%"></span>
+      <span class="bar-label">0.187</span>
+    </div></td>
+      <td>-0.187</td>
+      <td>no</td>
+      <td>Ranger vs Zombie is comparatively stable across team sizes.</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <th scope="row">Nail vs Acolyte</th>
+      <td>1.000</td>
+      <td>1.000</td>
+      <td>0.861</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="0.139">
+      <span class="bar bar-warn" style="width:13.90%"></span>
+      <span class="bar-label">0.139</span>
+    </div></td>
+      <td>-0.139</td>
+      <td>no</td>
+      <td>Nail vs Acolyte is comparatively stable across team sizes.</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <th scope="row">ElfScout vs Hammer</th>
+      <td>0.189</td>
+      <td>0.259</td>
+      <td>0.204</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="0.069">
+      <span class="bar bar-warn" style="width:6.90%"></span>
+      <span class="bar-label">0.069</span>
+    </div></td>
+      <td>+0.014</td>
+      <td>no</td>
+      <td>ElfScout vs Hammer is comparatively stable across team sizes.</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <th scope="row">Skeleton vs Zombie</th>
+      <td>1.000</td>
+      <td>0.952</td>
+      <td>0.993</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="0.048">
+      <span class="bar bar-warn" style="width:4.80%"></span>
+      <span class="bar-label">0.048</span>
+    </div></td>
+      <td>-0.007</td>
+      <td>no</td>
+      <td>Skeleton vs Zombie is comparatively stable across team sizes.</td>
+    </tr></tbody>
+      </table>
+    </div>
+  </section>
+  <section aria-labelledby="by-size">
+    <h2 id="by-size">Balance by Team Size</h2>
+    <p>The current patch scores low across every team size in this simulator. Its best score is 18.4 in 3v3, which still trails Nodnarb21's proposed unlimited unit stats at every size. The strongest current-patch pattern is persistent Hammer dominance and Ranger weakness rather than a single isolated problem size.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Per-size balance profile</caption>
+        <thead>
+          <tr>
+            <th scope="col">State</th>
+            <th scope="col">Size</th>
+            <th scope="col">Balance Score</th>
+            <th scope="col">Playable %</th>
+            <th scope="col">Stomp %</th>
+            <th scope="col">Power Spread</th>
+            <th scope="col">Strongest</th>
+            <th scope="col">Weakest</th>
+          </tr>
+        </thead>
+        <tbody>
+    <tr>
+      <th scope="row">Low Median</th>
+      <td>1v1</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="47.3">
+      <span class="bar bar-good" style="width:94.60%"></span>
+      <span class="bar-label">47.3</span>
+    </div></td>
+      <td>28.6%</td>
+      <td>23.8%</td>
+      <td>0.570</td>
+      <td>Skeleton</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Low Median</th>
+      <td>2v2</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="37.4">
+      <span class="bar bar-good" style="width:74.80%"></span>
+      <span class="bar-label">37.4</span>
+    </div></td>
+      <td>23.8%</td>
+      <td>28.6%</td>
+      <td>0.709</td>
+      <td>Acolyte</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Low Median</th>
+      <td>3v3</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="33.1">
+      <span class="bar bar-warn" style="width:66.20%"></span>
+      <span class="bar-label">33.1</span>
+    </div></td>
+      <td>19.0%</td>
+      <td>47.6%</td>
+      <td>0.814</td>
+      <td>Acolyte</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Low Median</th>
+      <td>4v4</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="26.9">
+      <span class="bar bar-warn" style="width:53.80%"></span>
+      <span class="bar-label">26.9</span>
+    </div></td>
+      <td>19.0%</td>
+      <td>66.7%</td>
+      <td>0.885</td>
+      <td>Acolyte</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Low Median</th>
+      <td>6v6</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="23.7">
+      <span class="bar bar-warn" style="width:47.40%"></span>
+      <span class="bar-label">23.7</span>
+    </div></td>
+      <td>19.0%</td>
+      <td>71.4%</td>
+      <td>0.914</td>
+      <td>Acolyte</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Main pre-v0.3.3</th>
+      <td>1v1</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="13.0">
+      <span class="bar bar-bad" style="width:26.00%"></span>
+      <span class="bar-label">13.0</span>
+    </div></td>
+      <td>4.8%</td>
+      <td>76.2%</td>
+      <td>0.867</td>
+      <td>Hammer</td>
+      <td>Zombie</td>
+    </tr>
+    <tr>
+      <th scope="row">Main pre-v0.3.3</th>
+      <td>2v2</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="16.5">
+      <span class="bar bar-bad" style="width:33.00%"></span>
+      <span class="bar-label">16.5</span>
+    </div></td>
+      <td>4.8%</td>
+      <td>71.4%</td>
+      <td>0.837</td>
+      <td>Hammer</td>
+      <td>Acolyte</td>
+    </tr>
+    <tr>
+      <th scope="row">Main pre-v0.3.3</th>
+      <td>3v3</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="24.4">
+      <span class="bar bar-warn" style="width:48.80%"></span>
+      <span class="bar-label">24.4</span>
+    </div></td>
+      <td>9.5%</td>
+      <td>61.9%</td>
+      <td>0.821</td>
+      <td>Hammer</td>
+      <td>Zombie</td>
+    </tr>
+    <tr>
+      <th scope="row">Main pre-v0.3.3</th>
+      <td>4v4</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="20.4">
+      <span class="bar bar-warn" style="width:40.80%"></span>
+      <span class="bar-label">20.4</span>
+    </div></td>
+      <td>4.8%</td>
+      <td>61.9%</td>
+      <td>0.860</td>
+      <td>Hammer</td>
+      <td>Zombie</td>
+    </tr>
+    <tr>
+      <th scope="row">Main pre-v0.3.3</th>
+      <td>6v6</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="14.4">
+      <span class="bar bar-bad" style="width:28.80%"></span>
+      <span class="bar-label">14.4</span>
+    </div></td>
+      <td>4.8%</td>
+      <td>76.2%</td>
+      <td>0.826</td>
+      <td>Acolyte</td>
+      <td>Zombie</td>
+    </tr>
+    <tr>
+      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
+      <td>1v1</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="28.6">
+      <span class="bar bar-warn" style="width:57.20%"></span>
+      <span class="bar-label">28.6</span>
+    </div></td>
+      <td>28.6%</td>
+      <td>57.1%</td>
+      <td>0.841</td>
+      <td>Hammer</td>
+      <td>Acolyte</td>
+    </tr>
+    <tr>
+      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
+      <td>2v2</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="41.9">
+      <span class="bar bar-good" style="width:83.80%"></span>
+      <span class="bar-label">41.9</span>
+    </div></td>
+      <td>38.1%</td>
+      <td>38.1%</td>
+      <td>0.583</td>
+      <td>Hammer</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
+      <td>3v3</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="45.3">
+      <span class="bar bar-good" style="width:90.60%"></span>
+      <span class="bar-label">45.3</span>
+    </div></td>
+      <td>28.6%</td>
+      <td>28.6%</td>
+      <td>0.510</td>
+      <td>Zombie</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
+      <td>4v4</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="34.4">
+      <span class="bar bar-warn" style="width:68.80%"></span>
+      <span class="bar-label">34.4</span>
+    </div></td>
+      <td>19.0%</td>
+      <td>42.9%</td>
+      <td>0.569</td>
+      <td>Zombie</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
+      <td>6v6</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="32.9">
+      <span class="bar bar-warn" style="width:65.80%"></span>
+      <span class="bar-label">32.9</span>
+    </div></td>
+      <td>23.8%</td>
+      <td>47.6%</td>
+      <td>0.808</td>
+      <td>Acolyte</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Main v0.3.11.4021</th>
+      <td>1v1</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="5.9">
+      <span class="bar bar-bad" style="width:11.80%"></span>
+      <span class="bar-label">5.9</span>
+    </div></td>
+      <td>0.0%</td>
+      <td>85.7%</td>
+      <td>0.895</td>
+      <td>Hammer</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Main v0.3.11.4021</th>
+      <td>2v2</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="11.1">
+      <span class="bar bar-bad" style="width:22.20%"></span>
+      <span class="bar-label">11.1</span>
+    </div></td>
+      <td>4.8%</td>
+      <td>76.2%</td>
+      <td>0.923</td>
+      <td>Hammer</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Main v0.3.11.4021</th>
+      <td>3v3</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="18.4">
+      <span class="bar bar-bad" style="width:36.80%"></span>
+      <span class="bar-label">18.4</span>
+    </div></td>
+      <td>9.5%</td>
+      <td>76.2%</td>
+      <td>0.941</td>
+      <td>Hammer</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Main v0.3.11.4021</th>
+      <td>4v4</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="16.2">
+      <span class="bar bar-bad" style="width:32.40%"></span>
+      <span class="bar-label">16.2</span>
+    </div></td>
+      <td>4.8%</td>
+      <td>71.4%</td>
+      <td>0.956</td>
+      <td>Hammer</td>
+      <td>Ranger</td>
+    </tr>
+    <tr>
+      <th scope="row">Main v0.3.11.4021</th>
+      <td>6v6</td>
+      <td>
+    <div class="bar-wrap" role="img" aria-label="15.1">
+      <span class="bar bar-bad" style="width:30.20%"></span>
+      <span class="bar-label">15.1</span>
+    </div></td>
+      <td>4.8%</td>
+      <td>71.4%</td>
+      <td>0.855</td>
+      <td>Hammer</td>
+      <td>Ranger</td>
+    </tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    Source workbook: basic-rebalance-formatted-dashboard.xlsx. Formula scan at extraction time: {&quot;kind&quot;:&quot;notice&quot;,&quot;message&quot;:&quot;Cell search matched 0 entries.&quot;}.
+  </footer>
+</main>
+</body>
+</html>
