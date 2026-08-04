@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
-  <title>Vanguard Exiles Balance Executive Summary</title>
+  <title>Vanguard Exiles — Unlimited Unit Balance Report &amp; Proposal</title>
   <style>
     :root {
       color-scheme: light;
@@ -208,46 +208,183 @@
 <body>
 <main>
   <header class="report-header">
-    <p class="eyebrow">Vanguard Exiles Community Balance Report</p>
-    <h1>Simulator-Based Unit Balance Summary</h1>
-    <p>This report summarizes simulated one-zone melee matchup data across the available stat states and asks how globally balanced the units appear across 1v1, 2v2, 3v3, 4v4, and 6v6 repeated-unit fights.</p>
-    <p><strong>Update note:</strong> This is a re-release of the balance dataset after adding the current patch unit stats and rerunning the simulations.</p>
-    <p><strong>Generation note:</strong> The matchup results were generated with a Python-based Vanguard Exiles simulator, organized in the balance spreadsheet, and summarized into this HTML report with agentic AI assistance.</p>
-    <p><strong>Workbook:</strong> <a href="vanguard-exiles-balance-workbook.xlsx" download>Download the sanitized balance workbook (.xlsx)</a>.</p>
+    <p class="eyebrow">Vanguard Exiles &middot; Community Balance Report &middot; August 2026</p>
+    <h1>Unlimited Unit Balance Report &amp; Rebalance Proposal</h1>
+    <p>How balanced are the free basic units against each other? This August 2026 release measures every known stat configuration the same way — simulated fights for every unit pair, from 1v1 to 6v6 — and offers a community rebalance: a recommended proposal plus two lighter options. Every number in this page comes from those simulations.</p>
+    <p><a href="vanguard-exiles-balance-workbook.xlsx" download>Download the full workbook (.xlsx)</a> for every win rate, sample size, and stat sheet.</p>
   </header>
+
+  <div class="callout" style="border-left-color: var(--good); background: #ecfdf5; font-size: 1.05rem;">
+    <strong>The one-line version:</strong> today, 72% of basic-unit matchups are effectively decided the moment both sides deploy. The proposal cuts that to 5% — without removing a single mechanic.
+  </div>
+
+
+  <section aria-labelledby="audio-summary">
+    <h2 id="audio-summary">Audio Summary</h2>
+    <p>Prefer to listen? This reads a two-minute plain-language summary of the report using your browser's built-in speech voice. Every section below also has its own Listen button.</p>
+    <p>
+      <button id="tts-play" type="button" style="font: inherit; font-weight:700; padding:8px 18px; border-radius:6px; border:1px solid var(--line); background:var(--header); cursor:pointer;">&#9658; Listen to this report</button>
+      <span id="tts-status" style="margin-left:10px; color:var(--muted);"></span>
+    </p>
+  </section>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var summaryText = "This is the Vanguard Exiles unlimited unit balance report and rebalance proposal, August 2026. The report compares ten different stat configurations for the games seven basic units, all measured the same way: simulated fights between every pair of units, at team sizes from one versus one up to six versus six. The headline finding: in the current live patch, most basic unit matchups are effectively decided before the fight starts. About 72 percent of matchups between the six melee basics are stomps, meaning one side wins at least nine times out of ten, and the overall balance score is 17 out of a possible one hundred. Hammer dominates almost everything, while Acolyte flips from helpless in small fights to nearly unbeatable in big ones. The rebalance comes as four options, all keeping every units signature mechanic. The recommended one, Option B, is nodnarb twenty ones favorite: a few attack and health values, evade percentages, attack timing, a Reap stacking limit, weaker raised zombies, and Hammer gains a fifty percent chance of an immediate extra swing whenever it kills. The result is that almost every one versus one between the melee basics becomes a genuine coin flip, with twelve of the fifteen melee matchups landing within one point of fifty fifty, while group fights stay different from each other through the units mechanics. Under the proposal, the balance score rises to 72, stomps fall to 5 percent, and 59 percent of matchups land in the playable band. The report also includes three variants for the developers: Option A drops the Hammer swing and scores the single highest balance number; Option C also drops the Reap limit; and Option D changes stats and timing only. All are still large improvements over the live game; the lightest options trade Acolyte returning to dominating large fights. The full win rate matrices, exact stat configurations, and per-cell sample sizes are in the downloadable workbook. Thanks for listening.";
+    var supported = ('speechSynthesis' in window);
+    if (!supported) {
+      var s = document.getElementById('tts-status');
+      if (s) s.textContent = 'Speech synthesis is not supported in this browser.';
+      var p = document.getElementById('tts-play');
+      if (p) p.disabled = true;
+      return;
+    }
+    var current = null; // {btn, label, title}
+
+    // Floating player bar: appears while audio is active, from any section.
+    var bar = document.createElement('div');
+    bar.id = 'tts-bar';
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', 'Audio playback controls');
+    bar.style.cssText = 'display:none;position:fixed;bottom:16px;right:16px;z-index:1000;' +
+      'align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;' +
+      'background:var(--header);box-shadow:0 4px 18px rgba(15,23,42,0.18);font-size:0.9rem;max-width:min(92vw,420px);';
+    var barTitle = document.createElement('span');
+    barTitle.style.cssText = 'font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;';
+    barTitle.setAttribute('aria-live', 'polite');
+    function barBtn(html, label) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = html;
+      b.setAttribute('aria-label', label);
+      b.style.cssText = 'font:inherit;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;cursor:pointer;white-space:nowrap;';
+      return b;
+    }
+    var barPause = barBtn('&#10074;&#10074; Pause', 'Pause or resume audio');
+    var barStop = barBtn('&#9632; Stop', 'Stop audio');
+    bar.appendChild(barTitle);
+    bar.appendChild(barPause);
+    bar.appendChild(barStop);
+    document.body.appendChild(bar);
+
+    function pickVoice() {
+      var voices = window.speechSynthesis.getVoices();
+      var preferred = voices.filter(function (v) { return /en/i.test(v.lang) && /natural|neural|online/i.test(v.name); });
+      var english = voices.filter(function (v) { return /^en/i.test(v.lang); });
+      return preferred[0] || english[0] || null;
+    }
+    function updateBar() {
+      if (!current) { bar.style.display = 'none'; return; }
+      barTitle.textContent = current.title;
+      barPause.innerHTML = current.btn.dataset.state === 'paused' ? '&#9658; Resume' : '&#10074;&#10074; Pause';
+      bar.style.display = 'flex';
+    }
+    function stopAll() {
+      window.speechSynthesis.cancel();
+      if (current) { current.btn.innerHTML = current.label; current.btn.dataset.state = 'idle'; }
+      current = null;
+      updateBar();
+    }
+    function pauseResume() {
+      if (!current) return;
+      if (current.btn.dataset.state === 'playing') {
+        window.speechSynthesis.pause();
+        current.btn.dataset.state = 'paused';
+        current.btn.innerHTML = '&#9658; Resume';
+      } else if (current.btn.dataset.state === 'paused') {
+        window.speechSynthesis.resume();
+        current.btn.dataset.state = 'playing';
+        current.btn.innerHTML = '&#10074;&#10074; Pause';
+      }
+      updateBar();
+    }
+    function playText(btn, label, title, text) {
+      if (current && current.btn === btn) { pauseResume(); return; }
+      stopAll(); // starting a new section stops whatever else was playing
+      current = {btn: btn, label: label, title: title};
+      btn.dataset.state = 'playing';
+      btn.innerHTML = '&#10074;&#10074; Pause';
+      updateBar();
+      var sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+      var queue = sentences.slice();
+      (function next() {
+        if (!current || current.btn !== btn) return;
+        if (!queue.length) { stopAll(); return; }
+        var u = new SpeechSynthesisUtterance(queue.shift());
+        var v = pickVoice();
+        if (v) u.voice = v;
+        u.rate = 1.0;
+        u.onend = next;
+        u.onerror = function () { stopAll(); };
+        window.speechSynthesis.speak(u);
+      })();
+    }
+    barPause.addEventListener('click', pauseResume);
+    barStop.addEventListener('click', stopAll);
+
+    var playBtn = document.getElementById('tts-play');
+    if (playBtn) {
+      playBtn.addEventListener('click', function () {
+        playText(playBtn, '&#9658; Listen to this report', 'Report summary', summaryText);
+      });
+    }
+    document.querySelectorAll('main > section').forEach(function (sec) {
+      var h2 = sec.querySelector('h2');
+      if (!h2 || h2.id === 'audio-summary') return;
+      var secTitle = h2.textContent.trim();
+      var parts = [secTitle + '.'];
+      sec.querySelectorAll('p, h3, .callout').forEach(function (el) {
+        if (el.closest('.table-wrap')) return;
+        var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+        if (t) parts.push(/[.!?]$/.test(t) ? t : t + '.');
+      });
+      var text = parts.join(' ');
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = '&#9658; Listen';
+      b.dataset.state = 'idle';
+      b.style.cssText = 'font:inherit;font-size:0.85rem;font-weight:700;padding:4px 12px;border-radius:6px;border:1px solid var(--line);background:var(--header);cursor:pointer;margin-left:12px;vertical-align:middle;';
+      b.setAttribute('aria-label', 'Listen to the ' + secTitle + ' section');
+      b.addEventListener('click', function () { playText(b, '&#9658; Listen', secTitle, text); });
+      h2.appendChild(b);
+    });
+    window.addEventListener('beforeunload', function () { window.speechSynthesis.cancel(); });
+  });
+  </script>
+
 
   <section aria-labelledby="exec-summary">
     <h2 id="exec-summary">Executive Summary</h2>
-    <p>In this simulator-based dataset, the current main patch, <strong>Main v0.3.11.4021</strong>, scores as the most polarized state in the workbook. It has the lowest average Balance Score, the lowest playable-matchup rate, and the highest stomp rate. <strong>Nodnarb21's proposed unlimited unit stats</strong> is the healthiest profile by this metric set.</p>
-    <div class="summary" aria-label="Current patch key balance metrics">
+    <p>The current patch, <strong>Main v0.3.11.4021</strong>, remains the most one-sided state measured: three out of four basic-unit matchups are 90/10 or worse. The recommended rebalance is <strong>Option B</strong> below — nodnarb21's preferred configuration, with the fewest one-sided matchups measured — alongside three variants sharing the same stat changes: down to stats-only, and <strong>Option A</strong>, the single most balanced state, for developers who prefer no new Hammer mechanic. Every option keeps every unit's signature mechanic and turns almost every 1v1 between the melee basics into a near coin flip; the deeper options also tame the group-fight snowballs.</p>
+    <div class="summary" aria-label="Key balance metrics" style="grid-template-columns: repeat(2, minmax(0, 1fr)) repeat(2, minmax(0, 1fr));">
       <article class="kpi">
-        <div class="label">Current Balance Score</div>
-        <div class="value bad-text">13.3</div>
-        <p class="note">Lowest of 4 compared states.</p>
+        <div class="label">Current Patch Balance Score</div>
+        <div class="value bad-text">17.0</div>
+        <p class="note">Lowest of the compared states (higher is better).</p>
       </article>
       <article class="kpi">
-        <div class="label">Playable Matchups</div>
-        <div class="value bad-text">4.8%</div>
-        <p class="note">Only broad 35-65 win-rate matchups count as playable.</p>
+        <div class="label">Proposed Options Balance Score</div>
+        <div class="value good-text">71.7</div>
+        <p class="note">The recommended option; the lighter options score 65-66.</p>
       </article>
-      <article class="kpi">
-        <div class="label">Stomp Matchups</div>
-        <div class="value bad-text">76.2%</div>
-        <p class="note">90/10 or worse outcomes dominate the current patch.</p>
+      <article class="kpi" style="grid-column: span 2;">
+        <div class="label">Stomp Matchups (90/10 or worse) &mdash; lower is better</div>
+        <div style="margin:6px 0 10px;"><div class="bar-wrap" role="img" aria-label="Today: 72.0%"><span class="bar bar-bad" style="width:72.00%"></span><span class="bar-label">Today: 72.0%</span></div></div>
+        <div><div class="bar-wrap" role="img" aria-label="Proposal: 5.3%"><span class="bar bar-good" style="width:5.30%"></span><span class="bar-label">Proposal: 5.3%</span></div></div>
       </article>
-      <article class="kpi">
-        <div class="label">Best Scoring Profile</div>
-        <div class="value good-text">Nodnarb21's proposed unlimited unit stats</div>
-        <p class="note">Balance Score 36.6, stomp rate 42.9%.</p>
+      <article class="kpi" style="grid-column: span 2;">
+        <div class="label">Playable Matchups (35-65% win rates) &mdash; higher is better</div>
+        <div style="margin:6px 0 10px;"><div class="bar-wrap" role="img" aria-label="Today: 6.7%"><span class="bar bar-bad" style="width:6.70%"></span><span class="bar-label">Today: 6.7%</span></div></div>
+        <div><div class="bar-wrap" role="img" aria-label="Proposal: 58.7%"><span class="bar bar-good" style="width:58.70%"></span><span class="bar-label">Proposal: 58.7%</span></div></div>
       </article>
     </div>
     <div class="callout">
-      <strong>Primary observation:</strong> current main appears structurally polarized in this simulator model. Hammer is a persistent high-power outlier, Ranger is a persistent low-power outlier, and Acolyte creates large team-size-dependent reversals.
+      <strong>Primary observation:</strong> almost every basic-unit 1v1 in the live game is decided before it starts, because the units' hits-to-kill math has hard winners. The proposal tunes statlines so the melee basics race each other evenly, then bounds the two group-fight snowballs (Acolyte's Reap, Zombie's plague) with number-only changes. Ranger is out of this proposal's scope; headline numbers score the six melee basics, with Ranger-inclusive data in the workbook.
     </div>
   </section>
+
   <section aria-labelledby="ranking">
     <h2 id="ranking">State Ranking</h2>
-    <p>The ranking uses average Balance Score as the primary sort, then checks playable matchup rate, stomp rate, power spread, and power standard deviation for consistency. These results should be read as model evidence and balance-discussion inputs, not as a replacement for live-game data, design intent, player skill, map context, or developer judgment.</p>
+    <p>Every configuration was tested the same way: each pair of units fought at team sizes 1v1 through 6v6, with up to 10,000 simulated fights per matchup. Scores count the six melee basics; the workbook has every number, including Ranger matchups.</p>
     <div class="table-wrap">
       <table>
         <caption>Overall balance ranking by stat state</caption>
@@ -258,85 +395,202 @@
             <th scope="col">Balance Score</th>
             <th scope="col">Playable %</th>
             <th scope="col">Stomp %</th>
-            <th scope="col">Power Spread</th>
-            <th scope="col">Power StdDev</th>
             <th scope="col">Reading</th>
           </tr>
         </thead>
         <tbody>
     <tr>
       <td>1</td>
-      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="36.6">
-      <span class="bar bar-good" style="width:73.20%"></span>
-      <span class="bar-label">36.6</span>
-    </div></td>
-      <td>27.6%</td>
-      <td>42.9%</td>
-      <td>0.662</td>
-      <td>0.205</td>
-      <td>Best overall balance score among compared states.</td>
+      <th scope="row">Option A: Stats + Weaker Raised Zombies + Reap Limit (2026-08-04)</th>
+      <td><div class="bar-wrap" role="img" aria-label="72.8"><span class="bar bar-good" style="width:100.00%"></span><span class="bar-label">72.8</span></div></td>
+      <td>64.0%</td>
+      <td>9.3%</td>
+      <td>The most balanced state measured: identical to Option B but without the Hammer on-kill swing.</td>
     </tr>
-    <tr>
+    <tr style="background:#ecfdf5;">
       <td>2</td>
-      <th scope="row">Low Median</th>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="33.7">
-      <span class="bar bar-warn" style="width:67.40%"></span>
-      <span class="bar-label">33.7</span>
-    </div></td>
-      <td>21.9%</td>
-      <td>47.6%</td>
-      <td>0.778</td>
-      <td>0.272</td>
-      <td>Reference balance state.</td>
+      <th scope="row">Recommended Proposal (Option B): Stats + Weaker Raised Zombies + Reap Limit + Hammer Berserk 50% (2026-08-04)</th>
+      <td><div class="bar-wrap" role="img" aria-label="71.7"><span class="bar bar-good" style="width:100.00%"></span><span class="bar-label">71.7</span></div></td>
+      <td>58.7%</td>
+      <td>5.3%</td>
+      <td>The recommended proposal and nodnarb21's favorite: Option A plus a 50% chance for Hammer to swing again on kill; the lowest stomp rate measured.</td>
     </tr>
     <tr>
       <td>3</td>
-      <th scope="row">Main pre-v0.3.3</th>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="17.7">
-      <span class="bar bar-bad" style="width:35.40%"></span>
-      <span class="bar-label">17.7</span>
-    </div></td>
-      <td>5.7%</td>
-      <td>69.5%</td>
-      <td>0.842</td>
-      <td>0.293</td>
-      <td>Reference balance state.</td>
+      <th scope="row">Option C: Stats + Weaker Raised Zombies (2026-08-04)</th>
+      <td><div class="bar-wrap" role="img" aria-label="66.8"><span class="bar bar-good" style="width:100.00%"></span><span class="bar-label">66.8</span></div></td>
+      <td>56.0%</td>
+      <td>16.0%</td>
+      <td>The middle option: stat changes plus weaker raised zombies, Reap untouched.</td>
     </tr>
     <tr>
       <td>4</td>
-      <th scope="row">Main v0.3.11.4021</th>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="13.3">
-      <span class="bar bar-bad" style="width:26.60%"></span>
-      <span class="bar-label">13.3</span>
-    </div></td>
-      <td>4.8%</td>
-      <td>76.2%</td>
-      <td>0.914</td>
-      <td>0.293</td>
-      <td>Current patch has the lowest average balance score and highest stomp percent.</td>
-    </tr></tbody>
+      <th scope="row">Option D: Stats and Timing Only (2026-08-04)</th>
+      <td><div class="bar-wrap" role="img" aria-label="66.3"><span class="bar bar-good" style="width:100.00%"></span><span class="bar-label">66.3</span></div></td>
+      <td>57.3%</td>
+      <td>18.7%</td>
+      <td>The lightest option: only stats and attack timing change, no ability edits.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <th scope="row">Nodnarb21 FinalIteration (2025-09-03)</th>
+      <td><div class="bar-wrap" role="img" aria-label="38.9"><span class="bar bar-warn" style="width:77.80%"></span><span class="bar-label">38.9</span></div></td>
+      <td>32.0%</td>
+      <td>46.7%</td>
+      <td>Nodnarb21's 2025 proposal; the best of the earlier attempts.</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <th scope="row">Tinbeard Test Build v0.3.11.4135 (2026-07-29)</th>
+      <td><div class="bar-wrap" role="img" aria-label="38.5"><span class="bar bar-warn" style="width:77.00%"></span><span class="bar-label">38.5</span></div></td>
+      <td>28.0%</td>
+      <td>42.7%</td>
+      <td>The current test build; an improvement, but Nail becomes the new best unit.</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <th scope="row">Low Median (v0.3.3, 2025-09-30)</th>
+      <td><div class="bar-wrap" role="img" aria-label="38.4"><span class="bar bar-warn" style="width:76.80%"></span><span class="bar-label">38.4</span></div></td>
+      <td>26.7%</td>
+      <td>41.3%</td>
+      <td>The September 2025 rework: normalized stats made small fights fairer but removed much of what made the units distinct, and Acolyte and Zombie took over big fights.</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <th scope="row">Piopavel Iteration (2026-08-03)</th>
+      <td><div class="bar-wrap" role="img" aria-label="33.4"><span class="bar bar-warn" style="width:66.80%"></span><span class="bar-label">33.4</span></div></td>
+      <td>25.3%</td>
+      <td>46.7%</td>
+      <td>Piopavel's version, which keeps the basics weak overall; better than live, but small stat numbers still force lopsided fights.</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <th scope="row">Main v0.3.11.4021 (current, 2026-04-15)</th>
+      <td><div class="bar-wrap" role="img" aria-label="17.0"><span class="bar bar-bad" style="width:34.00%"></span><span class="bar-label">17.0</span></div></td>
+      <td>6.7%</td>
+      <td>72.0%</td>
+      <td>Current patch: lowest balance score, highest stomp rate.</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <th scope="row">Main pre-v0.3.3 (until 2025-09-29)</th>
+      <td><div class="bar-wrap" role="img" aria-label="13.7"><span class="bar bar-bad" style="width:27.40%"></span><span class="bar-label">13.7</span></div></td>
+      <td>6.7%</td>
+      <td>78.7%</td>
+      <td>The original stats, before the big September 2025 rework.</td>
+    </tr>
+        </tbody>
       </table>
     </div>
   </section>
-  <section aria-labelledby="three-way-comparison">
-    <h2 id="three-way-comparison">Three-Way Comparison: Earlier Main, Current Main, and Nodnarb21's Proposal</h2>
-    <p>Across the three most relevant stat states, the current patch is the most polarized profile in this simulator. The earlier main state was already uneven, but the current patch moves further away from global parity, while Nodnarb21's proposed unlimited unit stats produce the strongest overall balance profile.</p>
-    <h3>Current Patch vs. Earlier Main</h3>
-    <p>Compared with <strong>Main pre-v0.3.3</strong>, the current patch moves in the wrong direction on the headline simulator metrics: Balance Score drops by 4.4 points, playable matchups drop by 0.9 percentage points, stomp matchups rise by 6.7 percentage points, and power spread increases from 0.842 to 0.914. Hammer remains the recurring high-end pressure point, while the common weakest unit shifts from Zombie to Ranger.</p>
-    <h3>Current Patch vs. Nodnarb21's Proposed Unlimited Unit Stats</h3>
-    <p>Compared with <strong>Nodnarb21's proposed unlimited unit stats</strong>, current main is substantially more polarized. Nodnarb21's profile improves Balance Score by 23.3 points, raises playable matchups by 22.8 percentage points, reduces stomp matchups by 33.3 percentage points, and narrows power spread by 0.252. That makes it the clearest comparison profile in this dataset for discussing what a less polarized stat set could look like.</p>
-  </section>
-  <section aria-labelledby="unit-analysis">
-    <h2 id="unit-analysis">Current Patch Unit Analysis</h2>
-    <p>Current main has a severe top-bottom split. Hammer wins nearly everything, Ranger loses nearly everything, and several mid-pack units are more matchup-polarized than their average power suggests.</p>
+
+  <section aria-labelledby="proposal">
+    <h2 id="proposal">The Proposed Options (August 2026)</h2>
+    <p>Every unit keeps its signature mechanic. The recommended <strong>Option B</strong> (nodnarb21's favorite) changes a few attack and health values, two evade percentages, attack timing for two units, a limit on Reap stacking, and the raised zombie's stats — plus one addition: Hammer gains a 50% chance of an immediate extra swing whenever it kills (an existing mechanic at half strength).</p>
+    <div class="summary" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+<article class="kpi"><div class="label">Hammer</div><div class="value" style="font-size:1.05rem;">3/7 <span style="color:var(--muted);">&rarr;</span> <strong>3/8, Berserk 50% on-kill swing</strong></div><p class="note">One more health point, plus a 50% chance to swing again whenever it kills — it finally has a mechanic of its own.</p></article><article class="kpi"><div class="label">Nail</div><div class="value" style="font-size:1.05rem;">2/6, 1 armor, Piercing <span style="color:var(--muted);">&rarr;</span> <strong>2/8, 1 armor, Piercing</strong></div><p class="note">Two more health points; its fights become even trades, and armor and Piercing are untouched.</p></article><article class="kpi"><div class="label">Skeleton</div><div class="value" style="font-size:1.05rem;">2/7, 50% ranged evade <span style="color:var(--muted);">&rarr;</span> <strong>3/7, 35% ranged evade</strong></div><p class="note">Gets its attack back; ranged evade eases to 35% (the exact number is flexible).</p></article><article class="kpi"><div class="label">Zombie</div><div class="value" style="font-size:1.05rem;">3/6, Last Strike, Zombie Plague <span style="color:var(--muted);">&rarr;</span> <strong>3/7, Zombie Plague</strong></div><p class="note">No longer attacks last; raised zombies come back weaker.</p></article><article class="kpi"><div class="label">Elf Scout</div><div class="value" style="font-size:1.05rem;">3/5, First Strike, 10% evade <span style="color:var(--muted);">&rarr;</span> <strong>3/5, First Strike, 25% evade</strong></div><p class="note">Keeps 5 health; dodges a lot more.</p></article><article class="kpi"><div class="label">Acolyte</div><div class="value" style="font-size:1.05rem;">2/6, Last Strike <span style="color:var(--muted);">&rarr;</span> <strong>3/7</strong></div><p class="note">Fights properly alone; Reap feeds on the first two deaths, not forever.</p></article><article class="kpi"><div class="label">Ranger</div><div class="value" style="font-size:1.05rem;">2/4, 10% evade <span style="color:var(--muted);">&rarr;</span> <strong>3/4, 20% evade</strong></div><p class="note">Hits harder, with the test build's 20% evade.</p></article>
+    </div>
+    <details><summary style="cursor:pointer;font-weight:700;color:#075985;padding:6px 0;">Show the full change table with reasons</summary>
     <div class="table-wrap">
       <table>
-        <caption>Current patch unit ranking</caption>
+        <caption>Proposed stats (changes in bold)</caption>
+        <thead>
+          <tr><th scope="col">Unit</th><th scope="col">Live (v0.3.11.4021)</th><th scope="col">Proposed</th><th scope="col">Why</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Hammer</th><td>3 atk / 7 HP</td><td>3 / <strong>8</strong>, <strong>50% chance of an immediate extra swing on kill</strong> (Option A: no swing)</td><td>The pool racing it evenly removes its dominance (its matchups land near 50% instead of it beating everything); the on-kill swing gives it a mechanic of its own and lifts it from the bottom half to mid-pack.</td></tr>
+          <tr><th scope="row">Nail</th><td>2/6, 1 armor, Piercing</td><td>2/<strong>8</strong>, 1 armor, Piercing</td><td>Identity untouched. In a pool of 3-attack peers, armor stops polarizing, and the extra health keeps it useful as fights grow.</td></tr>
+          <tr><th scope="row">Skeleton</th><td>2/7, Evade Ranged 50%</td><td><strong>3</strong>/7, Evade Ranged <strong>35%</strong></td><td>Gets its original 3 attack back; the anti-ranged counter softens from a hard lock to a strong lean. The 35% is a suggestion, not a hard rule — anything meaningfully below 50% achieves the same shape.</td></tr>
+          <tr><th scope="row">Zombie</th><td>3/6, Last Strike, Plague</td><td>3/<strong>7</strong>, <strong>normal initiative</strong>, Plague; raised zombies spawn at <strong>2/5</strong></td><td>Last Strike made its 1v1s all-or-nothing. Normal initiative plus 7 HP makes them real fights; the weaker raised zombie trims the horde snowball. Zombie Bear and Zombie Troll are unchanged.</td></tr>
+          <tr><th scope="row">Elf Scout</th><td>3/5, 10% evade, First Strike, Move 2</td><td>3/5, <strong>25% evade</strong></td><td>Keeps 5 HP (the 4-HP beta version crosses two one-shot/two-shot breakpoints at once); evade is the fine-grained survivability dial.</td></tr>
+          <tr><th scope="row">Acolyte</th><td>2/6, Last Strike, Reap (unlimited stacking)</td><td><strong>3</strong>/<strong>7</strong>, <strong>normal initiative</strong>, Reap capped at <strong>2 charges</strong> per fight</td><td>Bounding the attack stack: alone it now fights at ~50%; in big fights it is strong (76% at 6v6) instead of automatic (99%+).</td></tr>
+          <tr><th scope="row">Ranger</th><td>2/4, 10% evade (beta: 20%)</td><td><strong>3</strong>/4, <strong>20% evade</strong></td><td>Attack 3 restores its punch (the pre-rework value); 20% evade keeps the test build's survivability buff.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    </details>
+    <p>The statlines are chosen so the melee basics trade in equal hit counts — including through Nail's armor. Twelve of the fifteen melee 1v1s land within one point of 50/50; the only spread is Elf Scout's intended evade edges (it wins 56-58% of three matchups and 43% against Acolyte). Group fights then differ by each unit's mechanic.</p>
+    <h3>The other options: A, C, and D</h3>
+    <p><strong>Option A — the most balanced state:</strong> identical to Option B with the Hammer swing removed. It posts the single highest Balance Score (72.8 vs 71.7) but more one-sided matchups (9.3% stomps vs 5.3%), and Hammer returns to the bottom half of the pool with no mechanic of its own. nodnarb21's preference is Option B; Option A is the pick if no new Hammer behavior is wanted.</p>
+    <p>The two lighter options are adoptable fallbacks, not just diagnostics. <strong>Option C</strong> keeps the stat changes and the weaker raised zombies but drops both the Reap charge limit and the Hammer swing (Reap keeps unlimited stacking). <strong>Option D</strong> also leaves raised zombies at full strength, making it a stats-and-timing-only change with no ability edits beyond the evade-ranged percentage. Both remain far ahead of every live and historical state; the cost is that Acolyte's 6v6 win rate climbs back toward ~99% (melee-only Balance Score 66.8 for Option C and 66.3 for Option D, vs 71.7 for Option B). If the developers prefer fewer mechanic changes, either is a defensible first step, with the Reap limit and the swing available later as follow-up dials.</p>
+    <p><strong>What was tried and rejected for Hammer:</strong> Ambush (the Knight/Squire opener) was tested first. Its 4-damage opening swing two-shots any 7-health unit, so making it fair forced three other units up to 8 health — and that extra health fed Acolyte's and Zombie's big-fight strength, costing about six balance points overall. The on-kill swing gives Hammer the same "finally has a mechanic" payoff without touching anyone else's stats. Taunt and targeting-override mechanics were also considered and dropped for changing the game's targeting behavior too broadly.</p>
+    <p><strong>On Ranger:</strong> the 3 attack / 4 health / 20% evade line is simply the measured suggestion — the author has no preference among reasonable Ranger buffs, and any of the tested variants works alongside this set.</p>
+  </section>
+
+  <section aria-labelledby="stat-configs">
+    <h2 id="stat-configs">Exact Stat Configurations</h2>
+    <details><summary style="cursor:pointer;font-weight:700;color:#075985;padding:6px 0;">Show the exact stats for every configuration</summary>
+    <p>Every configuration at a glance: attack/health first, then armor, abilities, attack timing, and evade chances, all spelled out. "Raised Zombie" is the unit Zombie Plague summons. The workbook's <em>Sim Stat Configurations</em> sheet has the same data in full columns, including exact ability formulas.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Simulated unit configurations by state</caption>
+        <thead>
+          <tr>
+            <th scope="col">State</th>
+            <th scope="col">Hammer</th>
+            <th scope="col">Nail</th>
+            <th scope="col">Skeleton</th>
+            <th scope="col">Zombie</th>
+            <th scope="col">Elf Scout</th>
+            <th scope="col">Acolyte</th>
+            <th scope="col">Ranger</th>
+            <th scope="col">Raised Zombie</th>
+            <th scope="col">Reap Rules</th>
+          </tr>
+        </thead>
+        <tbody>
+    <tr><th scope="row">Option A: Stats + Weaker Raised Zombies + Reap Limit (2026-08-04)</th><td>3/8</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>2/5, Zombie Plague</td><td>Reap capped at 2 charges each</td></tr>
+    <tr><th scope="row">Recommended Proposal (Option B): Stats + Weaker Raised Zombies + Reap Limit + Hammer Berserk 50% (2026-08-04)</th><td>3/8, Berserk 50% on-kill swing</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>2/5, Zombie Plague</td><td>Reap capped at 2 charges each</td></tr>
+    <tr><th scope="row">Option C: Stats + Weaker Raised Zombies (2026-08-04)</th><td>3/8</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>2/5, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
+    <tr><th scope="row">Option D: Stats and Timing Only (2026-08-04)</th><td>3/8</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>3/7, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
+    <tr><th scope="row">Nodnarb21 FinalIteration (2025-09-03)</th><td>3/7, Last Strike</td><td>2/6, 1 armor, Piercing, Last Strike</td><td>2/7, 35% ranged evade</td><td>3/6, Zombie Plague</td><td>3/4, First Strike, 20% evade</td><td>2/6</td><td>3/4, 10% evade</td><td>3/6, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
+    <tr><th scope="row">Tinbeard Test Build v0.3.11.4135 (2026-07-29)</th><td>3/6</td><td>2/5, 1 armor, Piercing</td><td>2/7, 50% ranged evade</td><td>3/6, Last Strike, Zombie Plague</td><td>3/4, First Strike, 10% evade</td><td>2/6, Last Strike</td><td>2/4, 20% evade</td><td>3/6, Last Strike, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
+    <tr><th scope="row">Low Median (v0.3.3, 2025-09-30)</th><td>2/5</td><td>1/5, 1 armor, Piercing, Last Strike</td><td>2/5, 50% ranged evade</td><td>2/5, Zombie Plague</td><td>2/4, First Strike, 10% evade</td><td>2/5</td><td>2/4, 10% evade</td><td>2/5, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
+    <tr><th scope="row">Piopavel Iteration (2026-08-03)</th><td>1/7, Piercing, Ambush +2 first attack</td><td>2/5, 1 armor, Piercing</td><td>2/7, 50% ranged evade</td><td>3/6, Last Strike, Zombie Plague</td><td>3/4, First Strike, 20% evade</td><td>2/6, Last Strike</td><td>2/5, 20% evade</td><td>3/6, Last Strike, Zombie Plague</td><td>standard Reap; Hammer has Ambush(2)</td></tr>
+    <tr><th scope="row">Main pre-v0.3.3 (until 2025-09-29)</th><td>3/7</td><td>1/8, 1 armor</td><td>3/5, 75% ranged evade</td><td>2/6, Last Strike, Zombie Plague</td><td>3/5, First Strike, 10% evade</td><td>2/6, Last Strike</td><td>3/4, 10% evade</td><td>2/6, Last Strike, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
+    <tr><th scope="row">Main v0.3.11.4021 (current, 2026-04-15)</th><td>3/7</td><td>2/6, 1 armor, Piercing</td><td>2/7, 50% ranged evade</td><td>3/6, Last Strike, Zombie Plague</td><td>3/5, First Strike, 10% evade</td><td>2/6, Last Strike</td><td>2/4, 10% evade</td><td>3/6, Last Strike, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+  </section>
+
+
+
+  <section aria-labelledby="engine-formulas">
+    <h2 id="engine-formulas">Engine Formulas for the Ability Changes</h2>
+    <details><summary style="cursor:pointer;font-weight:700;color:#075985;padding:6px 0;">Show the ability formulas (for the developers)</summary>
+    <p>Every ability change in the proposals is expressed in the game's own formula language, ready to enter into the engine as an ability definition. Unchanged abilities keep their live formulas. Stat, initiative, and evade-percent changes are plain unit-data fields and are listed in the stat configuration table above.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Ability definitions used by the proposed states</caption>
+        <thead>
+          <tr>
+            <th scope="col">Ability Instance</th>
+            <th scope="col">Formula (rules text)</th>
+            <th scope="col">Used By</th>
+          </tr>
+        </thead>
+        <tbody>
+    <tr><th scope="row">Ambush(2)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">BuffOnEvent(PreFirstAttackInRoom 1.0 SELF UNLIMITED Buff(BEAT 1 ATTACK 2))</code></td><td>Piopavel Iteration</td></tr>
+    <tr><th scope="row">Berserk(50%)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">AdditionalAttack(OnKill 0.5 RANDOMTAUNTAWARE_ENEMY)</code></td><td>Recommended Proposal</td></tr>
+    <tr><th scope="row">RangedEvade(35%)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">RangedEvade(0.35)</code></td><td>Nodnarb21 FinalIteration; Option A: Stats + Weaker Raised Zombies + Reap Limit; Option C: Stats + Weaker Raised Zombies; Option D: Stats and Timing Only; Recommended Proposal</td></tr>
+    <tr><th scope="row">RangedEvade(75%)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">RangedEvade(0.75)</code></td><td>Main pre-v0.3.3</td></tr>
+    <tr><th scope="row">ReapDamage(1)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">BuffOnEvent(OnUnitDied 1.0 SELF 2 Buff(EVENT OnDealtOutDamage ATTACK 1))</code></td><td>Option A: Stats + Weaker Raised Zombies + Reap Limit; Recommended Proposal</td></tr>
+    <tr><th scope="row">ReapTempBuff(0,1)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">BuffOnEvent(OnUnitDied 1.0 SELF 2 Buff(ROUND 1 HITPOINTS 1))</code></td><td>Option A: Stats + Weaker Raised Zombies + Reap Limit; Recommended Proposal</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+  </section>
+
+  <section aria-labelledby="proposal-units">
+    <h2 id="proposal-units">Proposal Unit Analysis</h2>
+    <details><summary style="cursor:pointer;font-weight:700;color:#075985;padding:6px 0;">Show the proposal&#8217;s per-unit numbers</summary>
+    <p>Average power is each unit's mean win rate against the other five across all team sizes (0.500 is perfectly even). The proposal's strongest-to-weakest gap is 0.341 — against 0.809 live — with the remaining tails explained by scaling identity: Reap and plague scale up in big fights, armor and vanilla statlines do not.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Proposal unit ranking (melee-only)</caption>
         <thead>
           <tr>
             <th scope="col">Rank</th>
@@ -347,7 +601,92 @@
             <th scope="col">Volatility</th>
             <th scope="col">Fav / Even / Unfav</th>
             <th scope="col">Stomps For / Against</th>
-            <th scope="col">Interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td>1</td>
+        <th scope="row">Zombie</th>
+        <td><span class="tag">Balanced</span></td>
+        <td><div class="bar-wrap" role="img" aria-label="0.645"><span class="bar bar-good" style="width:64.50%"></span><span class="bar-label">0.645</span></div></td>
+        <td>+0.193</td>
+        <td>0.155</td>
+        <td>14 / 10 / 1</td>
+        <td>1 / 0</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <th scope="row">Acolyte</th>
+        <td><span class="tag">Balanced</span></td>
+        <td><div class="bar-wrap" role="img" aria-label="0.633"><span class="bar bar-good" style="width:63.30%"></span><span class="bar-label">0.633</span></div></td>
+        <td>+0.249</td>
+        <td>0.173</td>
+        <td>13 / 11 / 1</td>
+        <td>3 / 0</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <th scope="row">Hammer</th>
+        <td><span class="tag">Balanced</span></td>
+        <td><div class="bar-wrap" role="img" aria-label="0.544"><span class="bar bar-good" style="width:54.40%"></span><span class="bar-label">0.544</span></div></td>
+        <td>+0.058</td>
+        <td>0.150</td>
+        <td>13 / 7 / 5</td>
+        <td>0 / 0</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <th scope="row">Elf Scout</th>
+        <td><span class="tag">Balanced</span></td>
+        <td><div class="bar-wrap" role="img" aria-label="0.455"><span class="bar bar-good" style="width:45.50%"></span><span class="bar-label">0.455</span></div></td>
+        <td>-0.033</td>
+        <td>0.164</td>
+        <td>7 / 4 / 14</td>
+        <td>0 / 0</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <th scope="row">Skeleton</th>
+        <td><span class="tag">Balanced</span></td>
+        <td><div class="bar-wrap" role="img" aria-label="0.404"><span class="bar bar-good" style="width:40.40%"></span><span class="bar-label">0.404</span></div></td>
+        <td>-0.185</td>
+        <td>0.146</td>
+        <td>1 / 14 / 10</td>
+        <td>0 / 1</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <th scope="row">Nail</th>
+        <td><span class="tag">Scale-sensitive</span></td>
+        <td><div class="bar-wrap" role="img" aria-label="0.319"><span class="bar bar-good" style="width:31.90%"></span><span class="bar-label">0.319</span></div></td>
+        <td>-0.282</td>
+        <td>0.157</td>
+        <td>0 / 8 / 17</td>
+        <td>0 / 3</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+  </section>
+
+  <section aria-labelledby="unit-analysis">
+    <h2 id="unit-analysis">Current Patch Unit Analysis</h2>
+    <details><summary style="cursor:pointer;font-weight:700;color:#075985;padding:6px 0;">Show the current patch&#8217;s per-unit numbers</summary>
+    <p>For contrast: the live patch's severe top-bottom split. Hammer wins nearly everything, Ranger loses nearly everything, and Acolyte flips from helpless to dominant purely on team size.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Current patch unit ranking (melee-only)</caption>
+        <thead>
+          <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">Unit</th>
+            <th scope="col">Tier</th>
+            <th scope="col">Average Power</th>
+            <th scope="col">6v6 - 1v1</th>
+            <th scope="col">Volatility</th>
+            <th scope="col">Fav / Even / Unfav</th>
+            <th scope="col">Stomps For / Against</th>
           </tr>
         </thead>
         <tbody>
@@ -355,662 +694,83 @@
         <td>1</td>
         <th scope="row">Hammer</th>
         <td><span class="tag">Overperforming</span></td>
-        <td>
-    <div class="bar-wrap" role="img" aria-label="0.939">
-      <span class="bar bar-bad" style="width:93.90%"></span>
-      <span class="bar-label">0.939</span>
-    </div></td>
-        <td>-0.110</td>
-        <td>0.136</td>
-        <td>29 / 0 / 1</td>
-        <td>24 / 0</td>
-        <td>Hammer is the clearest high-end outlier in this simulator and dominates across nearly every current-patch matchup.</td>
+        <td><div class="bar-wrap" role="img" aria-label="0.928"><span class="bar bar-bad" style="width:92.80%"></span><span class="bar-label">0.928</span></div></td>
+        <td>-0.134</td>
+        <td>0.146</td>
+        <td>24 / 0 / 1</td>
+        <td>19 / 0</td>
       </tr>
       <tr>
         <td>2</td>
-        <th scope="row">ElfScout</th>
+        <th scope="row">Elf Scout</th>
         <td><span class="tag">Overperforming</span></td>
-        <td>
-    <div class="bar-wrap" role="img" aria-label="0.771">
-      <span class="bar bar-bad" style="width:77.10%"></span>
-      <span class="bar-label">0.771</span>
-    </div></td>
-        <td>-0.191</td>
-        <td>0.324</td>
-        <td>23 / 0 / 7</td>
-        <td>18 / 1</td>
-        <td>ElfScout appears globally high power in this simulator and is worth reviewing before broad buffs.</td>
+        <td><div class="bar-wrap" role="img" aria-label="0.730"><span class="bar bar-bad" style="width:73.00%"></span><span class="bar-label">0.730</span></div></td>
+        <td>-0.230</td>
+        <td>0.334</td>
+        <td>18 / 1 / 6</td>
+        <td>13 / 1</td>
       </tr>
       <tr>
         <td>3</td>
         <th scope="row">Nail</th>
-        <td><span class="tag">Polarized</span></td>
-        <td>
-    <div class="bar-wrap" role="img" aria-label="0.585">
-      <span class="bar bar-good" style="width:58.50%"></span>
-      <span class="bar-label">0.585</span>
-    </div></td>
-        <td>-0.145</td>
-        <td>0.455</td>
-        <td>17 / 0 / 13</td>
-        <td>15 / 10</td>
-        <td>Nail is counter-polarized; average power hides sharp matchup swings.</td>
+        <td><span class="tag">Scale-sensitive</span></td>
+        <td><div class="bar-wrap" role="img" aria-label="0.466"><span class="bar bar-good" style="width:46.60%"></span><span class="bar-label">0.466</span></div></td>
+        <td>-0.332</td>
+        <td>0.451</td>
+        <td>11 / 0 / 14</td>
+        <td>9 / 11</td>
       </tr>
       <tr>
         <td>4</td>
         <th scope="row">Skeleton</th>
         <td><span class="tag">Polarized</span></td>
-        <td>
-    <div class="bar-wrap" role="img" aria-label="0.421">
-      <span class="bar bar-good" style="width:42.10%"></span>
-      <span class="bar-label">0.421</span>
-    </div></td>
-        <td>-0.167</td>
-        <td>0.475</td>
-        <td>12 / 1 / 17</td>
-        <td>12 / 16</td>
-        <td>Skeleton is counter-polarized; average power hides sharp matchup swings.</td>
+        <td><div class="bar-wrap" role="img" aria-label="0.305"><span class="bar bar-good" style="width:30.50%"></span><span class="bar-label">0.305</span></div></td>
+        <td>-0.202</td>
+        <td>0.436</td>
+        <td>7 / 1 / 17</td>
+        <td>7 / 16</td>
       </tr>
       <tr>
         <td>5</td>
         <th scope="row">Zombie</th>
-        <td><span class="tag">Polarized</span></td>
-        <td>
-    <div class="bar-wrap" role="img" aria-label="0.409">
-      <span class="bar bar-good" style="width:40.90%"></span>
-      <span class="bar-label">0.409</span>
-    </div></td>
-        <td>+0.087</td>
-        <td>0.395</td>
-        <td>12 / 0 / 18</td>
-        <td>6 / 12</td>
-        <td>Zombie sits closer to the middle than the major outliers.</td>
+        <td><span class="tag">Balanced</span></td>
+        <td><div class="bar-wrap" role="img" aria-label="0.305"><span class="bar bar-good" style="width:30.50%"></span><span class="bar-label">0.305</span></div></td>
+        <td>+0.069</td>
+        <td>0.350</td>
+        <td>7 / 0 / 18</td>
+        <td>3 / 12</td>
       </tr>
       <tr>
         <td>6</td>
         <th scope="row">Acolyte</th>
         <td><span class="tag">Scale-sensitive</span></td>
-        <td>
-    <div class="bar-wrap" role="img" aria-label="0.350">
-      <span class="bar bar-good" style="width:35.00%"></span>
-      <span class="bar-label">0.350</span>
-    </div></td>
-        <td>+0.596</td>
-        <td>0.402</td>
-        <td>11 / 1 / 18</td>
-        <td>5 / 15</td>
-        <td>Acolyte gains heavily with team size; review larger fights separately from small fights.</td>
+        <td><div class="bar-wrap" role="img" aria-label="0.265"><span class="bar bar-warn" style="width:26.50%"></span><span class="bar-label">0.265</span></div></td>
+        <td>+0.829</td>
+        <td>0.351</td>
+        <td>6 / 2 / 17</td>
+        <td>3 / 14</td>
       </tr>
-      <tr>
-        <td>7</td>
-        <th scope="row">Ranger</th>
-        <td><span class="tag">Underperforming</span></td>
-        <td>
-    <div class="bar-wrap" role="img" aria-label="0.025">
-      <span class="bar bar-warn" style="width:2.50%"></span>
-      <span class="bar-label">0.025</span>
-    </div></td>
-        <td>-0.070</td>
-        <td>0.052</td>
-        <td>0 / 0 / 30</td>
-        <td>0 / 26</td>
-        <td>Ranger appears globally low power in this simulator and is worth reviewing for matchup-specific support.</td>
-      </tr></tbody>
+        </tbody>
       </table>
     </div>
+  </details>
   </section>
+
   <section aria-labelledby="methodology">
     <h2 id="methodology">Methodology</h2>
-    <p>The balance framework measures more than average win rate. It looks for broadly playable matchups, fewer extreme stomp outcomes, smaller strongest-to-weakest gaps, and lower unit power dispersion.</p>
-    <p>Simulation inputs came from the stat-state configurations represented in the workbook. The Python simulator ran repeated-unit one-zone melee fights for each unit pair and team size, producing win-rate matrices that were then converted into the balance metrics below.</p>
-    <p><strong>Important limitation:</strong> This simulation does not cover real-world match scenarios and should only be used as a measuring stick for controlled unit-stat pressure. Rangers are not designed to be used in melee combat, so Ranger results should be read with that context rather than as a full judgment of live-game Ranger usefulness. The model also does not capture every live-game factor such as player decision-making, board state, positioning beyond the modeled setup, or future design goals.</p>
-    <div class="table-wrap">
-      <table>
-        <caption>Metric definitions</caption>
-        <thead>
-          <tr>
-            <th scope="col">Metric</th>
-            <th scope="col">Calculation</th>
-            <th scope="col">Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-    <tr>
-      <th scope="row">Balance Score</th>
-      <td>Average of 1 - 2 * absolute(winrate - 0.5), multiplied by 100 across unordered pairs.</td>
-      <td>Standard pairwise fairness score adapted to win-rate matrices.</td>
-    </tr>
-    <tr>
-      <th scope="row">Playable %</th>
-      <td>Percent of unordered matchups with winrate from 0.35 to 0.65.</td>
-      <td>Wider than Close % because not every matchup needs to be exactly even.</td>
-    </tr>
-    <tr>
-      <th scope="row">Close %</th>
-      <td>Percent of unordered matchups with winrate from 0.45 to 0.55.</td>
-      <td>Strict balance band.</td>
-    </tr>
-    <tr>
-      <th scope="row">Stomp %</th>
-      <td>Percent of unordered matchups with winrate at 0.10 or lower, or 0.90 or higher.</td>
-      <td>Lower is better.</td>
-    </tr>
-    <tr>
-      <th scope="row">Power Spread</th>
-      <td>Strongest unit power index minus weakest unit power index within one size block.</td>
-      <td>Lower is better for global unit parity.</td>
-    </tr>
-    <tr>
-      <th scope="row">Power StdDev</th>
-      <td>Population standard deviation of unit power indices within one size block.</td>
-      <td>Lower is better.</td>
-    </tr>
-    <tr>
-      <th scope="row">Power Index</th>
-      <td>Average winrate for one unit across all non-mirror opponents.</td>
-      <td>Shown per unit and per team size.</td>
-    </tr>
-    <tr>
-      <th scope="row">Scaling Delta</th>
-      <td>Unit 6v6 power index minus its 1v1 power index.</td>
-      <td>Large absolute values indicate size sensitivity.</td>
-    </tr></tbody>
-      </table>
-    </div>
+    <details><summary style="cursor:pointer;font-weight:700;color:#075985;padding:6px 0;">Show how the numbers were made</summary>
+    <p>The balance framework measures more than average win rate: it looks for broadly playable matchups, few extreme stomps, small strongest-to-weakest gaps, and low power dispersion. Metric definitions are unchanged from the previous release and are included in the workbook.</p>
+    <p>Every configuration was tested with the same matchups: repeated-unit one-zone fights for every unit pair and team size, up to 10,000 simulated fights per matchup. Sample sizes for every cell are in the workbook.</p>
+  </details>
   </section>
-  <section aria-labelledby="matchups">
-    <h2 id="matchups">Most Important Matchup Scaling Risks</h2>
-    <p>Large pair ranges mean that the same unit matchup behaves very differently as team size changes. These are dangerous to tune with a single scalar stat change because the same adjustment can help one size band while making another worse.</p>
-    <div class="table-wrap">
-      <table>
-        <caption>Current patch pair swings by team size</caption>
-        <thead>
-          <tr>
-            <th scope="col">Rank</th>
-            <th scope="col">Pair</th>
-            <th scope="col">1v1</th>
-            <th scope="col">3v3</th>
-            <th scope="col">6v6</th>
-            <th scope="col">Range</th>
-            <th scope="col">6v6 - 1v1</th>
-            <th scope="col">Crosses 50%</th>
-            <th scope="col">Reading</th>
-          </tr>
-        </thead>
-        <tbody>
-    <tr>
-      <td>1</td>
-      <th scope="row">Skeleton vs Acolyte</th>
-      <td>1.000</td>
-      <td>0.547</td>
-      <td>0.001</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="0.999">
-      <span class="bar bar-bad" style="width:99.90%"></span>
-      <span class="bar-label">0.999</span>
-    </div></td>
-      <td>-0.999</td>
-      <td>yes</td>
-      <td>Skeleton vs Acolyte changes favored side across team sizes; tune with size-specific caution.</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <th scope="row">ElfScout vs Acolyte</th>
-      <td>1.000</td>
-      <td>0.796</td>
-      <td>0.026</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="0.974">
-      <span class="bar bar-bad" style="width:97.40%"></span>
-      <span class="bar-label">0.974</span>
-    </div></td>
-      <td>-0.974</td>
-      <td>yes</td>
-      <td>ElfScout vs Acolyte changes favored side across team sizes; tune with size-specific caution.</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <th scope="row">Nail vs Zombie</th>
-      <td>1.000</td>
-      <td>0.431</td>
-      <td>0.265</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="0.735">
-      <span class="bar bar-bad" style="width:73.50%"></span>
-      <span class="bar-label">0.735</span>
-    </div></td>
-      <td>-0.735</td>
-      <td>yes</td>
-      <td>Nail vs Zombie changes favored side across team sizes; tune with size-specific caution.</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <th scope="row">Hammer vs Acolyte</th>
-      <td>1.000</td>
-      <td>1.000</td>
-      <td>0.341</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="0.659">
-      <span class="bar bar-bad" style="width:65.90%"></span>
-      <span class="bar-label">0.659</span>
-    </div></td>
-      <td>-0.659</td>
-      <td>yes</td>
-      <td>Hammer vs Acolyte changes favored side across team sizes; tune with size-specific caution.</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <th scope="row">Acolyte vs Zombie</th>
-      <td>0.000</td>
-      <td>0.080</td>
-      <td>0.618</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="0.618">
-      <span class="bar bar-bad" style="width:61.80%"></span>
-      <span class="bar-label">0.618</span>
-    </div></td>
-      <td>+0.618</td>
-      <td>yes</td>
-      <td>Acolyte vs Zombie changes favored side across team sizes; tune with size-specific caution.</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <th scope="row">ElfScout vs Zombie</th>
-      <td>1.000</td>
-      <td>0.676</td>
-      <td>0.786</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="0.342">
-      <span class="bar bar-warn" style="width:34.20%"></span>
-      <span class="bar-label">0.342</span>
-    </div></td>
-      <td>-0.214</td>
-      <td>no</td>
-      <td>ElfScout vs Zombie is comparatively stable across team sizes.</td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <th scope="row">Ranger vs Acolyte</th>
-      <td>0.189</td>
-      <td>0.017</td>
-      <td>0.000</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="0.189">
-      <span class="bar bar-warn" style="width:18.90%"></span>
-      <span class="bar-label">0.189</span>
-    </div></td>
-      <td>-0.189</td>
-      <td>no</td>
-      <td>Ranger vs Acolyte is comparatively stable across team sizes.</td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <th scope="row">Ranger vs Zombie</th>
-      <td>0.191</td>
-      <td>0.047</td>
-      <td>0.004</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="0.187">
-      <span class="bar bar-warn" style="width:18.70%"></span>
-      <span class="bar-label">0.187</span>
-    </div></td>
-      <td>-0.187</td>
-      <td>no</td>
-      <td>Ranger vs Zombie is comparatively stable across team sizes.</td>
-    </tr>
-    <tr>
-      <td>9</td>
-      <th scope="row">Nail vs Acolyte</th>
-      <td>1.000</td>
-      <td>1.000</td>
-      <td>0.861</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="0.139">
-      <span class="bar bar-warn" style="width:13.90%"></span>
-      <span class="bar-label">0.139</span>
-    </div></td>
-      <td>-0.139</td>
-      <td>no</td>
-      <td>Nail vs Acolyte is comparatively stable across team sizes.</td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <th scope="row">ElfScout vs Hammer</th>
-      <td>0.189</td>
-      <td>0.259</td>
-      <td>0.204</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="0.069">
-      <span class="bar bar-warn" style="width:6.90%"></span>
-      <span class="bar-label">0.069</span>
-    </div></td>
-      <td>+0.014</td>
-      <td>no</td>
-      <td>ElfScout vs Hammer is comparatively stable across team sizes.</td>
-    </tr>
-    <tr>
-      <td>11</td>
-      <th scope="row">Skeleton vs Zombie</th>
-      <td>1.000</td>
-      <td>0.952</td>
-      <td>0.993</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="0.048">
-      <span class="bar bar-warn" style="width:4.80%"></span>
-      <span class="bar-label">0.048</span>
-    </div></td>
-      <td>-0.007</td>
-      <td>no</td>
-      <td>Skeleton vs Zombie is comparatively stable across team sizes.</td>
-    </tr></tbody>
-      </table>
-    </div>
-  </section>
+
   <section aria-labelledby="by-size">
     <h2 id="by-size">Balance by Team Size</h2>
-    <p>The current patch scores low across every team size in this simulator. Its best score is 18.4 in 3v3, which still trails Nodnarb21's proposed unlimited unit stats at every size. The strongest current-patch pattern is persistent Hammer dominance and Ranger weakness rather than a single isolated problem size.</p>
-    <div class="table-wrap">
-      <table>
-        <caption>Per-size balance profile</caption>
-        <thead>
-          <tr>
-            <th scope="col">State</th>
-            <th scope="col">Size</th>
-            <th scope="col">Balance Score</th>
-            <th scope="col">Playable %</th>
-            <th scope="col">Stomp %</th>
-            <th scope="col">Power Spread</th>
-            <th scope="col">Strongest</th>
-            <th scope="col">Weakest</th>
-          </tr>
-        </thead>
-        <tbody>
-    <tr>
-      <th scope="row">Low Median</th>
-      <td>1v1</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="47.3">
-      <span class="bar bar-good" style="width:94.60%"></span>
-      <span class="bar-label">47.3</span>
-    </div></td>
-      <td>28.6%</td>
-      <td>23.8%</td>
-      <td>0.570</td>
-      <td>Skeleton</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Low Median</th>
-      <td>2v2</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="37.4">
-      <span class="bar bar-good" style="width:74.80%"></span>
-      <span class="bar-label">37.4</span>
-    </div></td>
-      <td>23.8%</td>
-      <td>28.6%</td>
-      <td>0.709</td>
-      <td>Acolyte</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Low Median</th>
-      <td>3v3</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="33.1">
-      <span class="bar bar-warn" style="width:66.20%"></span>
-      <span class="bar-label">33.1</span>
-    </div></td>
-      <td>19.0%</td>
-      <td>47.6%</td>
-      <td>0.814</td>
-      <td>Acolyte</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Low Median</th>
-      <td>4v4</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="26.9">
-      <span class="bar bar-warn" style="width:53.80%"></span>
-      <span class="bar-label">26.9</span>
-    </div></td>
-      <td>19.0%</td>
-      <td>66.7%</td>
-      <td>0.885</td>
-      <td>Acolyte</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Low Median</th>
-      <td>6v6</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="23.7">
-      <span class="bar bar-warn" style="width:47.40%"></span>
-      <span class="bar-label">23.7</span>
-    </div></td>
-      <td>19.0%</td>
-      <td>71.4%</td>
-      <td>0.914</td>
-      <td>Acolyte</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Main pre-v0.3.3</th>
-      <td>1v1</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="13.0">
-      <span class="bar bar-bad" style="width:26.00%"></span>
-      <span class="bar-label">13.0</span>
-    </div></td>
-      <td>4.8%</td>
-      <td>76.2%</td>
-      <td>0.867</td>
-      <td>Hammer</td>
-      <td>Zombie</td>
-    </tr>
-    <tr>
-      <th scope="row">Main pre-v0.3.3</th>
-      <td>2v2</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="16.5">
-      <span class="bar bar-bad" style="width:33.00%"></span>
-      <span class="bar-label">16.5</span>
-    </div></td>
-      <td>4.8%</td>
-      <td>71.4%</td>
-      <td>0.837</td>
-      <td>Hammer</td>
-      <td>Acolyte</td>
-    </tr>
-    <tr>
-      <th scope="row">Main pre-v0.3.3</th>
-      <td>3v3</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="24.4">
-      <span class="bar bar-warn" style="width:48.80%"></span>
-      <span class="bar-label">24.4</span>
-    </div></td>
-      <td>9.5%</td>
-      <td>61.9%</td>
-      <td>0.821</td>
-      <td>Hammer</td>
-      <td>Zombie</td>
-    </tr>
-    <tr>
-      <th scope="row">Main pre-v0.3.3</th>
-      <td>4v4</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="20.4">
-      <span class="bar bar-warn" style="width:40.80%"></span>
-      <span class="bar-label">20.4</span>
-    </div></td>
-      <td>4.8%</td>
-      <td>61.9%</td>
-      <td>0.860</td>
-      <td>Hammer</td>
-      <td>Zombie</td>
-    </tr>
-    <tr>
-      <th scope="row">Main pre-v0.3.3</th>
-      <td>6v6</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="14.4">
-      <span class="bar bar-bad" style="width:28.80%"></span>
-      <span class="bar-label">14.4</span>
-    </div></td>
-      <td>4.8%</td>
-      <td>76.2%</td>
-      <td>0.826</td>
-      <td>Acolyte</td>
-      <td>Zombie</td>
-    </tr>
-    <tr>
-      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
-      <td>1v1</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="28.6">
-      <span class="bar bar-warn" style="width:57.20%"></span>
-      <span class="bar-label">28.6</span>
-    </div></td>
-      <td>28.6%</td>
-      <td>57.1%</td>
-      <td>0.841</td>
-      <td>Hammer</td>
-      <td>Acolyte</td>
-    </tr>
-    <tr>
-      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
-      <td>2v2</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="41.9">
-      <span class="bar bar-good" style="width:83.80%"></span>
-      <span class="bar-label">41.9</span>
-    </div></td>
-      <td>38.1%</td>
-      <td>38.1%</td>
-      <td>0.583</td>
-      <td>Hammer</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
-      <td>3v3</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="45.3">
-      <span class="bar bar-good" style="width:90.60%"></span>
-      <span class="bar-label">45.3</span>
-    </div></td>
-      <td>28.6%</td>
-      <td>28.6%</td>
-      <td>0.510</td>
-      <td>Zombie</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
-      <td>4v4</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="34.4">
-      <span class="bar bar-warn" style="width:68.80%"></span>
-      <span class="bar-label">34.4</span>
-    </div></td>
-      <td>19.0%</td>
-      <td>42.9%</td>
-      <td>0.569</td>
-      <td>Zombie</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Nodnarb21's proposed unlimited unit stats</th>
-      <td>6v6</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="32.9">
-      <span class="bar bar-warn" style="width:65.80%"></span>
-      <span class="bar-label">32.9</span>
-    </div></td>
-      <td>23.8%</td>
-      <td>47.6%</td>
-      <td>0.808</td>
-      <td>Acolyte</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Main v0.3.11.4021</th>
-      <td>1v1</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="5.9">
-      <span class="bar bar-bad" style="width:11.80%"></span>
-      <span class="bar-label">5.9</span>
-    </div></td>
-      <td>0.0%</td>
-      <td>85.7%</td>
-      <td>0.895</td>
-      <td>Hammer</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Main v0.3.11.4021</th>
-      <td>2v2</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="11.1">
-      <span class="bar bar-bad" style="width:22.20%"></span>
-      <span class="bar-label">11.1</span>
-    </div></td>
-      <td>4.8%</td>
-      <td>76.2%</td>
-      <td>0.923</td>
-      <td>Hammer</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Main v0.3.11.4021</th>
-      <td>3v3</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="18.4">
-      <span class="bar bar-bad" style="width:36.80%"></span>
-      <span class="bar-label">18.4</span>
-    </div></td>
-      <td>9.5%</td>
-      <td>76.2%</td>
-      <td>0.941</td>
-      <td>Hammer</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Main v0.3.11.4021</th>
-      <td>4v4</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="16.2">
-      <span class="bar bar-bad" style="width:32.40%"></span>
-      <span class="bar-label">16.2</span>
-    </div></td>
-      <td>4.8%</td>
-      <td>71.4%</td>
-      <td>0.956</td>
-      <td>Hammer</td>
-      <td>Ranger</td>
-    </tr>
-    <tr>
-      <th scope="row">Main v0.3.11.4021</th>
-      <td>6v6</td>
-      <td>
-    <div class="bar-wrap" role="img" aria-label="15.1">
-      <span class="bar bar-bad" style="width:30.20%"></span>
-      <span class="bar-label">15.1</span>
-    </div></td>
-      <td>4.8%</td>
-      <td>71.4%</td>
-      <td>0.855</td>
-      <td>Hammer</td>
-      <td>Ranger</td>
-    </tr></tbody>
-      </table>
-    </div>
+    <p>The proposal stays balanced at every fight size instead of falling apart as fights get bigger. Melee-only Balance Score by team size (1v1 / 2v2 / 3v3 / 4v4 / 6v6) — proposal: 95.4 / 77.9 / 69.1 / 63.3 / 52.8; current patch: 2.5 / 12.5 / 24.7 / 24.4 / 20.7. Full per-size grids are in the workbook's Sim Matrices sheet.</p>
   </section>
 
   <footer>
-    Source workbook: <a href="vanguard-exiles-balance-workbook.xlsx" download>vanguard-exiles-balance-workbook.xlsx</a>. Formula scan at extraction time: {&quot;kind&quot;:&quot;notice&quot;,&quot;message&quot;:&quot;Cell search matched 0 entries.&quot;}.
+    <p>August 2026 release, for the Vanguard Exiles community balance discussion.</p>
   </footer>
 </main>
 </body>
