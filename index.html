@@ -210,12 +210,12 @@
   <header class="report-header">
     <p class="eyebrow">Vanguard Exiles &middot; Community Balance Report &middot; August 2026</p>
     <h1>Unlimited Unit Balance Report &amp; Rebalance Proposal</h1>
-    <p>How balanced are the free basic units against each other? This August 2026 release measures every known stat configuration the same way — simulated fights for every unit pair, from 1v1 to 6v6 — and offers a community rebalance: a recommended proposal plus two lighter options. Every number in this page comes from those simulations.</p>
+    <p>How balanced are the free basic units against each other? This August 2026 release measures every known stat configuration the same way — simulated fights for every unit pair, from 1v1 to 6v6 — and offers a community rebalance: one recommended composition with per-unit implementation choices. Every number in this page comes from those simulations.</p>
     <p><a href="vanguard-exiles-balance-workbook.xlsx" download>Download the full workbook (.xlsx)</a> for every win rate, sample size, and stat sheet.</p>
   </header>
 
   <div class="callout" style="border-left-color: var(--good); background: #ecfdf5; font-size: 1.05rem;">
-    <strong>The one-line version:</strong> today, 72% of basic-unit matchups are effectively decided the moment both sides deploy. The proposal cuts that to 5% — without removing a single mechanic.
+    <strong>The one-line version:</strong> today, 72% of basic-unit matchups are effectively decided the moment both sides deploy. The proposal cuts that to 1% — without removing a single mechanic.
   </div>
 
 
@@ -229,7 +229,7 @@
   </section>
   <script>
   document.addEventListener('DOMContentLoaded', function () {
-    var summaryText = "This is the Vanguard Exiles unlimited unit balance report and rebalance proposal, August 2026. The report compares ten different stat configurations for the games seven basic units, all measured the same way: simulated fights between every pair of units, at team sizes from one versus one up to six versus six. The headline finding: in the current live patch, most basic unit matchups are effectively decided before the fight starts. About 72 percent of matchups between the six melee basics are stomps, meaning one side wins at least nine times out of ten, and the overall balance score is 17 out of a possible one hundred. Hammer dominates almost everything, while Acolyte flips from helpless in small fights to nearly unbeatable in big ones. The rebalance comes as four options, all keeping every units signature mechanic. The recommended one, Option B, is nodnarb twenty ones favorite: a few attack and health values, evade percentages, attack timing, a Reap stacking limit, weaker raised zombies, and Hammer gains a fifty percent chance of an immediate extra swing whenever it kills. The result is that almost every one versus one between the melee basics becomes a genuine coin flip, with twelve of the fifteen melee matchups landing within one point of fifty fifty, while group fights stay different from each other through the units mechanics. Under the proposal, the balance score rises to 72, stomps fall to 5 percent, and 59 percent of matchups land in the playable band. The report also includes three variants for the developers: Option A drops the Hammer swing and scores the single highest balance number; Option C also drops the Reap limit; and Option D changes stats and timing only. All are still large improvements over the live game; the lightest options trade Acolyte returning to dominating large fights. The full win rate matrices, exact stat configurations, and per-cell sample sizes are in the downloadable workbook. Thanks for listening.";
+    var summaryText = "This is the Vanguard Exiles unlimited unit balance report and rebalance proposal, August 2026. The report compares eleven different stat configurations for the games seven basic units, all measured the same way: simulated fights between every pair of units, at team sizes from one versus one up to six versus six. The headline finding: in the current live patch, most basic unit matchups are effectively decided before the fight starts. About 72 percent of matchups between the six melee basics are stomps, meaning one side wins at least nine times out of ten, and the overall balance score is 17 out of a possible one hundred. Hammer dominates almost everything, while Acolyte flips from helpless in small fights to nearly unbeatable in big ones. The recommended set is the Round Two proposal: one composition where nothing sits above seven health and no ability gains a hard limit. A few attack and health values change, attack timing for two units, evade percentages, and the group fight engines are tuned by proc rates: the plague's first rise is gated, so a real zombie's kill starts the horde half the time, while every zombie it raises keeps the live one hundred percent chain untouched. The Acolyte keeps only Reap's healing half — every death still feeds it one health, guaranteed and unlimited — while the attack half stays with the Magus units that define it. Hammer gains a half chance extra swing on kills, and Skeleton gains Lodged: a melee attacker that fells it is usually stunned for a beat. The result is that almost every one versus one between the melee basics becomes a genuine coin flip: every melee duel not involving Elf Scout lands within one point of fifty fifty, Scout's evade edges are the only intended spread, and group fights stay different from each other through the units mechanics. Under the proposal, the balance score rises to 74, stomps fall to 1 percent, and 61 percent of matchups land in the playable band. Every unit's row comes with measured alternatives, so any single mechanism can be swapped without re-deriving the set, and the first round's Options A through D remain in the ranking for comparison. Zombie and Skeleton land at equal power as different tools: one clusters and snowballs kills, the other spreads and taxes its own removal. The full win rate matrices, exact stat configurations, and per-cell sample sizes are in the downloadable workbook. Thanks for listening.";
     var supported = ('speechSynthesis' in window);
     if (!supported) {
       var s = document.getElementById('tts-status');
@@ -352,9 +352,40 @@
   </script>
 
 
+  <section aria-labelledby="changes">
+    <h2 id="changes">Proposed Changes at a Glance</h2>
+    <p>Pick one choice per unit — <strong>Choice 1 is the recommended set</strong>, and any choice combines freely with the other units' choices. Stat changes are edits to the unit table; formulas paste into the ability column as written. Anything not listed is unchanged.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Proposed change per unit, with selectable alternatives</caption>
+        <thead>
+          <tr><th scope="col">Unit</th><th scope="col">Change</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Hammer</th><td><strong>Choice 1 (recommended):</strong> 3 attack, 7 HP, add Berserk 50% (on-kill extra swing, chains)</td></tr>
+          <tr><td colspan="2" style="font-size:0.82rem; color:var(--muted); padding:2px 10px 10px;">formula: <code style="font-family:Consolas,monospace; font-size:0.82rem; background:var(--band); padding:1px 6px; border-radius:4px;">AdditionalAttack(OnKill 0.5 RANDOMTAUNTAWARE_ENEMY)</code></td></tr>
+          <tr><td colspan="2" style="font-size:0.85rem; padding:6px 10px 8px 26px; border-top:1px dashed var(--line);"><strong>Choice 2:</strong> 3 attack, 7 HP, no ability — the plain brick. Costs about 1.5 Balance and 4 points of one-sided matchups; Hammer lands at the pool's bottom with no mechanic. No formula needed.</td></tr>
+          <tr><th scope="row">Nail</th><td><strong>Choice 1 (recommended):</strong> 2 attack, 7 HP, 1 armor, Piercing — stat cell edit only (Hitpoints 6 to 7)</td></tr>
+          <tr><td colspan="2" style="font-size:0.85rem; padding:6px 10px 8px 26px; border-top:1px dashed var(--line);"><strong>Choice 2:</strong> also add Lodged (its melee killer is stunned) — lifts Nail from .31 to .42 power, immune to attack-buff scaling. formula: <code style="font-family:Consolas,monospace; font-size:0.82rem; background:var(--band); padding:1px 6px; border-radius:4px;">AddTempAbility(OnDeath 1.0 CAUSE Stunned)</code> (melee kills only — see the gate note under Skeleton)</td></tr>
+          <tr><td colspan="2" style="font-size:0.85rem; padding:6px 10px 8px 26px; border-top:1px dashed var(--line);"><strong>Choice 3:</strong> also add the on-kill swing at 50%, with Hammer taking Choice 2 (one swing in the pool, maximum) — lifts Nail to .42 with the lowest stomp rate measured. formula: <code style="font-family:Consolas,monospace; font-size:0.82rem; background:var(--band); padding:1px 6px; border-radius:4px;">AdditionalAttack(OnKill 0.5 RANDOMTAUNTAWARE_ENEMY)</code></td></tr>
+          <tr><td colspan="2" style="font-size:0.85rem; padding:6px 10px 8px 26px; border-top:1px dashed var(--line);"><strong>Choice 4:</strong> 8 HP instead of 7 — measured near-zero effect (+.03 power). Stat cell only.</td></tr>
+          <tr><th scope="row">Skeleton</th><td>3 attack, 7 HP, Evade Ranged anywhere in the 35-50% band, add Lodged 75% (melee killer is stunned)</td></tr>
+          <tr><td colspan="2" style="font-size:0.82rem; color:var(--muted); padding:2px 10px 10px;">formulas: <code style="font-family:Consolas,monospace; font-size:0.82rem; background:var(--band); padding:1px 6px; border-radius:4px;">RangedEvade(0.35)</code> (any value to 0.5) &nbsp; <code style="font-family:Consolas,monospace; font-size:0.82rem; background:var(--band); padding:1px 6px; border-radius:4px;">AddTempAbility(OnDeath 0.75 CAUSE Stunned)</code> — melee kills only: ranged units must be exempt even when attacking from inside the zone (the attack-type check Ranged Evade uses, inverted), so a ranged unit is never evaded <em>and</em> lodged. Needs an engine-side gate; the shipped AttackerDistance condition is positional and would wrongly catch point-blank ranged kills.</td></tr>
+          <tr><th scope="row">Zombie</th><td>3 attack, 7 HP, remove Last Strike (normal attack priority), Zombie Plague procs at 50% — a new ability instance on the basic Zombie only. Everything it raises is the existing Summoned Zombie, completely untouched: 3/6 with Last Strike and the live 100% plague, chaining forever. No new units; Zombie Bear, Zombie Troll, Possessed Zombie, Vitalux, and everything else that raises zombies is automatically unaffected.</td></tr>
+          <tr><td colspan="2" style="font-size:0.82rem; color:var(--muted); padding:2px 10px 10px;">formula (new instance on the basic Zombie — the live ZombiePlague formula with one number changed): <code style="font-family:Consolas,monospace; font-size:0.82rem; background:var(--band); padding:1px 6px; border-radius:4px;">Spawn(If TargetUnitKeyword(NONE Undead) OnKill 0.5 ATTACKED_ENEMY 1 SummonedZombie)</code></td></tr>
+          <tr><th scope="row">Acolyte</th><td><strong>Choice 1 (recommended):</strong> 3 attack, 7 HP, remove Last Strike (normal attack priority), and remove <code style="font-family:Consolas,monospace; font-size:0.85rem; background:var(--band); padding:1px 6px; border-radius:4px;">ReapDamage(1)</code> from the Acolyte's ability list. Its remaining Reap — <code style="font-family:Consolas,monospace; font-size:0.85rem; background:var(--band); padding:1px 6px; border-radius:4px;">ReapTempBuff(0,1)</code>, +1 HP per death — stays exactly live: 100% chance, unlimited, every death feeds it. No formula changes at all; the attack-Reap row survives untouched on Low Magus, High Magus, and Possessed Acolyte.</td></tr>
+          <tr><td colspan="2" style="font-size:0.85rem; padding:6px 10px 8px 26px; border-top:1px dashed var(--line);"><strong>Choice 2:</strong> keep both Reap halves at a 40% proc — the full damage-ramp identity, tuned (Acolyte .63 power, big fights .84; whole set 74.9 balance, 2.7% one-sided). Ship as two NEW ability instances assigned to the basic Acolyte only — editing the shared rows would nerf Low/High Magus. formulas: <code style="font-family:Consolas,monospace; font-size:0.82rem; background:var(--band); padding:1px 6px; border-radius:4px;">BuffOnEvent(OnUnitDied 0.4 SELF UNLIMITED Buff(EVENT OnDealtOutDamage ATTACK 1))</code> &nbsp; <code style="font-family:Consolas,monospace; font-size:0.82rem; background:var(--band); padding:1px 6px; border-radius:4px;">BuffOnEvent(OnUnitDied 0.4 SELF UNLIMITED Buff(ROUND 1 HITPOINTS 1))</code></td></tr>
+          <tr><td colspan="2" style="font-size:0.85rem; padding:6px 10px 8px 26px; border-top:1px dashed var(--line);"><strong>Choice 3:</strong> both halves at 100% with a 2-stack limit — every death pays until the bag is full, the flattest Acolyte curve measured (.51 to .81; whole set 71.8, 4.0% one-sided). Also ships as new instances (the Altars already use this exact capped pattern). formulas: <code style="font-family:Consolas,monospace; font-size:0.82rem; background:var(--band); padding:1px 6px; border-radius:4px;">BuffOnEvent(OnUnitDied 1.0 SELF 2 Buff(EVENT OnDealtOutDamage ATTACK 1))</code> &nbsp; <code style="font-family:Consolas,monospace; font-size:0.82rem; background:var(--band); padding:1px 6px; border-radius:4px;">BuffOnEvent(OnUnitDied 1.0 SELF 2 Buff(ROUND 1 HITPOINTS 1))</code></td></tr>
+          <tr><th scope="row">Elf Scout</th><td>3 attack, 5 HP, 25% evade, First Strike — stat cell edit only (EvadeChance 10 to 25)</td></tr>
+          <tr><th scope="row">Ranger</th><td>3 attack, 4 HP, 20% evade — stat cell edits only; any tested Ranger variant works alongside this set</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <section aria-labelledby="exec-summary">
     <h2 id="exec-summary">Executive Summary</h2>
-    <p>The current patch, <strong>Main v0.3.11.4021</strong>, remains the most one-sided state measured: three out of four basic-unit matchups are 90/10 or worse. The recommended rebalance is <strong>Option B</strong> below — nodnarb21's preferred configuration, with the fewest one-sided matchups measured — alongside three variants sharing the same stat changes: down to stats-only, and <strong>Option A</strong>, the single most balanced state, for developers who prefer no new Hammer mechanic. Every option keeps every unit's signature mechanic and turns almost every 1v1 between the melee basics into a near coin flip; the deeper options also tame the group-fight snowballs.</p>
+    <p>The current patch, <strong>Main v0.3.11.4021</strong>, remains the most one-sided state measured: three out of four basic-unit matchups are 90/10 or worse. The recommended rebalance is the <strong>Round 2 proposal</strong> in the table above — one composition with selectable implementation choices per unit. Nothing sits above 7 health, no ability gains a hard limit, every death still feeds both group-fight engines, and every 1v1 between the melee basics becomes a near coin flip. The first-round Options A-D remain in the ranking for comparison.</p>
     <div class="summary" aria-label="Key balance metrics" style="grid-template-columns: repeat(2, minmax(0, 1fr)) repeat(2, minmax(0, 1fr));">
       <article class="kpi">
         <div class="label">Current Patch Balance Score</div>
@@ -363,22 +394,22 @@
       </article>
       <article class="kpi">
         <div class="label">Proposed Options Balance Score</div>
-        <div class="value good-text">71.7</div>
-        <p class="note">The recommended option; the lighter options score 65-66.</p>
+        <div class="value good-text">73.6</div>
+        <p class="note">The recommended composition; the first-round options score 65-72.</p>
       </article>
       <article class="kpi" style="grid-column: span 2;">
         <div class="label">Stomp Matchups (90/10 or worse) &mdash; lower is better</div>
         <div style="margin:6px 0 10px;"><div class="bar-wrap" role="img" aria-label="Today: 72.0%"><span class="bar bar-bad" style="width:72.00%"></span><span class="bar-label">Today: 72.0%</span></div></div>
-        <div><div class="bar-wrap" role="img" aria-label="Proposal: 5.3%"><span class="bar bar-good" style="width:5.30%"></span><span class="bar-label">Proposal: 5.3%</span></div></div>
+        <div><div class="bar-wrap" role="img" aria-label="Proposal: 1.3%"><span class="bar bar-good" style="width:1.30%"></span><span class="bar-label">Proposal: 1.3%</span></div></div>
       </article>
       <article class="kpi" style="grid-column: span 2;">
         <div class="label">Playable Matchups (35-65% win rates) &mdash; higher is better</div>
         <div style="margin:6px 0 10px;"><div class="bar-wrap" role="img" aria-label="Today: 6.7%"><span class="bar bar-bad" style="width:6.70%"></span><span class="bar-label">Today: 6.7%</span></div></div>
-        <div><div class="bar-wrap" role="img" aria-label="Proposal: 58.7%"><span class="bar bar-good" style="width:58.70%"></span><span class="bar-label">Proposal: 58.7%</span></div></div>
+        <div><div class="bar-wrap" role="img" aria-label="Proposal: 61.3%"><span class="bar bar-good" style="width:61.30%"></span><span class="bar-label">Proposal: 61.3%</span></div></div>
       </article>
     </div>
     <div class="callout">
-      <strong>Primary observation:</strong> almost every basic-unit 1v1 in the live game is decided before it starts, because the units' hits-to-kill math has hard winners. The proposal tunes statlines so the melee basics race each other evenly, then bounds the two group-fight snowballs (Acolyte's Reap, Zombie's plague) with number-only changes. Ranger is out of this proposal's scope; headline numbers score the six melee basics, with Ranger-inclusive data in the workbook.
+      <strong>Primary observation:</strong> almost every basic-unit 1v1 in the live game is decided before it starts, because the units' hits-to-kill math has hard winners. The proposal tunes statlines so the melee basics race each other evenly, then bounds the two group-fight snowballs (Acolyte's Reap, Zombie's plague) with one-row changes: the plague's first rise gains a proc chance, and the Acolyte's Reap keeps its healing half. Ranger is out of this proposal's scope; headline numbers score the six melee basics, with Ranger-inclusive data in the workbook.
     </div>
   </section>
 
@@ -399,24 +430,32 @@
           </tr>
         </thead>
         <tbody>
-    <tr>
+    <tr style="background:#ecfdf5;">
       <td>1</td>
+      <th scope="row">Recommended (Round 2): 7-HP Pool + Per-Unit Dials (2026-08-06)</th>
+      <td><div class="bar-wrap" role="img" aria-label="73.6"><span class="bar bar-good" style="width:100.00%"></span><span class="bar-label">73.6</span></div></td>
+      <td>61.3%</td>
+      <td>1.3%</td>
+      <td>The current recommendation: nothing above 7 HP, no new units, the fewest one-sided matchups measured, Zombie and Skeleton at parity.</td>
+    </tr>
+    <tr>
+      <td>2</td>
       <th scope="row">Option A: Stats + Weaker Raised Zombies + Reap Limit (2026-08-04)</th>
       <td><div class="bar-wrap" role="img" aria-label="72.8"><span class="bar bar-good" style="width:100.00%"></span><span class="bar-label">72.8</span></div></td>
       <td>64.0%</td>
       <td>9.3%</td>
-      <td>The most balanced state measured: identical to Option B but without the Hammer on-kill swing.</td>
-    </tr>
-    <tr style="background:#ecfdf5;">
-      <td>2</td>
-      <th scope="row">Recommended Proposal (Option B): Stats + Weaker Raised Zombies + Reap Limit + Hammer Berserk 50% (2026-08-04)</th>
-      <td><div class="bar-wrap" role="img" aria-label="71.7"><span class="bar bar-good" style="width:100.00%"></span><span class="bar-label">71.7</span></div></td>
-      <td>58.7%</td>
-      <td>5.3%</td>
-      <td>The recommended proposal and nodnarb21's favorite: Option A plus a 50% chance for Hammer to swing again on kill; the lowest stomp rate measured.</td>
+      <td>First-round Option A: Option B without the Hammer on-kill swing.</td>
     </tr>
     <tr>
       <td>3</td>
+      <th scope="row">Option B: Stats + Weaker Raised Zombies + Reap Limit + Hammer Berserk 50% (2026-08-04)</th>
+      <td><div class="bar-wrap" role="img" aria-label="71.7"><span class="bar bar-good" style="width:100.00%"></span><span class="bar-label">71.7</span></div></td>
+      <td>58.7%</td>
+      <td>5.3%</td>
+      <td>First-round recommendation, superseded by Round 2 after design review.</td>
+    </tr>
+    <tr>
+      <td>4</td>
       <th scope="row">Option C: Stats + Weaker Raised Zombies (2026-08-04)</th>
       <td><div class="bar-wrap" role="img" aria-label="66.8"><span class="bar bar-good" style="width:100.00%"></span><span class="bar-label">66.8</span></div></td>
       <td>56.0%</td>
@@ -424,7 +463,7 @@
       <td>The middle option: stat changes plus weaker raised zombies, Reap untouched.</td>
     </tr>
     <tr>
-      <td>4</td>
+      <td>5</td>
       <th scope="row">Option D: Stats and Timing Only (2026-08-04)</th>
       <td><div class="bar-wrap" role="img" aria-label="66.3"><span class="bar bar-good" style="width:100.00%"></span><span class="bar-label">66.3</span></div></td>
       <td>57.3%</td>
@@ -432,7 +471,7 @@
       <td>The lightest option: only stats and attack timing change, no ability edits.</td>
     </tr>
     <tr>
-      <td>5</td>
+      <td>6</td>
       <th scope="row">Nodnarb21 FinalIteration (2025-09-03)</th>
       <td><div class="bar-wrap" role="img" aria-label="38.9"><span class="bar bar-warn" style="width:77.80%"></span><span class="bar-label">38.9</span></div></td>
       <td>32.0%</td>
@@ -440,7 +479,7 @@
       <td>Nodnarb21's 2025 proposal; the best of the earlier attempts.</td>
     </tr>
     <tr>
-      <td>6</td>
+      <td>7</td>
       <th scope="row">Tinbeard Test Build v0.3.11.4135 (2026-07-29)</th>
       <td><div class="bar-wrap" role="img" aria-label="38.5"><span class="bar bar-warn" style="width:77.00%"></span><span class="bar-label">38.5</span></div></td>
       <td>28.0%</td>
@@ -448,7 +487,7 @@
       <td>The current test build; an improvement, but Nail becomes the new best unit.</td>
     </tr>
     <tr>
-      <td>7</td>
+      <td>8</td>
       <th scope="row">Low Median (v0.3.3, 2025-09-30)</th>
       <td><div class="bar-wrap" role="img" aria-label="38.4"><span class="bar bar-warn" style="width:76.80%"></span><span class="bar-label">38.4</span></div></td>
       <td>26.7%</td>
@@ -456,7 +495,7 @@
       <td>The September 2025 rework: normalized stats made small fights fairer but removed much of what made the units distinct, and Acolyte and Zombie took over big fights.</td>
     </tr>
     <tr>
-      <td>8</td>
+      <td>9</td>
       <th scope="row">Piopavel Iteration (2026-08-03)</th>
       <td><div class="bar-wrap" role="img" aria-label="33.4"><span class="bar bar-warn" style="width:66.80%"></span><span class="bar-label">33.4</span></div></td>
       <td>25.3%</td>
@@ -464,7 +503,7 @@
       <td>Piopavel's version, which keeps the basics weak overall; better than live, but small stat numbers still force lopsided fights.</td>
     </tr>
     <tr>
-      <td>9</td>
+      <td>10</td>
       <th scope="row">Main v0.3.11.4021 (current, 2026-04-15)</th>
       <td><div class="bar-wrap" role="img" aria-label="17.0"><span class="bar bar-bad" style="width:34.00%"></span><span class="bar-label">17.0</span></div></td>
       <td>6.7%</td>
@@ -472,7 +511,7 @@
       <td>Current patch: lowest balance score, highest stomp rate.</td>
     </tr>
     <tr>
-      <td>10</td>
+      <td>11</td>
       <th scope="row">Main pre-v0.3.3 (until 2025-09-29)</th>
       <td><div class="bar-wrap" role="img" aria-label="13.7"><span class="bar bar-bad" style="width:27.40%"></span><span class="bar-label">13.7</span></div></td>
       <td>6.7%</td>
@@ -485,42 +524,37 @@
   </section>
 
   <section aria-labelledby="proposal">
-    <h2 id="proposal">The Proposed Options (August 2026)</h2>
-    <p>Every unit keeps its signature mechanic. The recommended <strong>Option B</strong> (nodnarb21's favorite) changes a few attack and health values, two evade percentages, attack timing for two units, a limit on Reap stacking, and the raised zombie's stats — plus one addition: Hammer gains a 50% chance of an immediate extra swing whenever it kills (an existing mechanic at half strength).</p>
-    <div class="summary" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
-<article class="kpi"><div class="label">Hammer</div><div class="value" style="font-size:1.05rem;">3/7 <span style="color:var(--muted);">&rarr;</span> <strong>3/8, Berserk 50% on-kill swing</strong></div><p class="note">One more health point, plus a 50% chance to swing again whenever it kills — it finally has a mechanic of its own.</p></article><article class="kpi"><div class="label">Nail</div><div class="value" style="font-size:1.05rem;">2/6, 1 armor, Piercing <span style="color:var(--muted);">&rarr;</span> <strong>2/8, 1 armor, Piercing</strong></div><p class="note">Two more health points; its fights become even trades, and armor and Piercing are untouched.</p></article><article class="kpi"><div class="label">Skeleton</div><div class="value" style="font-size:1.05rem;">2/7, 50% ranged evade <span style="color:var(--muted);">&rarr;</span> <strong>3/7, 35% ranged evade</strong></div><p class="note">Gets its attack back; ranged evade eases to 35% (the exact number is flexible).</p></article><article class="kpi"><div class="label">Zombie</div><div class="value" style="font-size:1.05rem;">3/6, Last Strike, Zombie Plague <span style="color:var(--muted);">&rarr;</span> <strong>3/7, Zombie Plague</strong></div><p class="note">No longer attacks last; raised zombies come back weaker.</p></article><article class="kpi"><div class="label">Elf Scout</div><div class="value" style="font-size:1.05rem;">3/5, First Strike, 10% evade <span style="color:var(--muted);">&rarr;</span> <strong>3/5, First Strike, 25% evade</strong></div><p class="note">Keeps 5 health; dodges a lot more.</p></article><article class="kpi"><div class="label">Acolyte</div><div class="value" style="font-size:1.05rem;">2/6, Last Strike <span style="color:var(--muted);">&rarr;</span> <strong>3/7</strong></div><p class="note">Fights properly alone; Reap feeds on the first two deaths, not forever.</p></article><article class="kpi"><div class="label">Ranger</div><div class="value" style="font-size:1.05rem;">2/4, 10% evade <span style="color:var(--muted);">&rarr;</span> <strong>3/4, 20% evade</strong></div><p class="note">Hits harder, with the test build's 20% evade.</p></article>
-    </div>
-    <details><summary style="cursor:pointer;font-weight:700;color:#075985;padding:6px 0;">Show the full change table with reasons</summary>
+    <h2 id="proposal">Design Notes &amp; Rationale</h2>
+    <p>The complete change list, choices, and formulas are in the table at the top. This section explains why each change is shaped the way it is.</p>
+    <p>The statlines are chosen so the melee basics trade in equal hit counts — including through Nail's armor. The 1v1 grid stays a field of coin flips; the only intended spread is Elf Scout's evade edges. Group fights then differ by each unit's mechanic — and the two Red basics land at the same power as different tools: Zombie clusters and converts kills into bodies, Skeleton spreads and makes its removal cost tempo.</p>
+    <p><strong>How Lodged plays:</strong> killing a Skeleton in melee stuns the killer — it loses its next attack — three times out of four. It is deterministic enough to plan around — remove skeletons with your least tempo-critical unit, or shoot them (ranged kills avoid the grip entirely, so ranged removal becomes the clean answer to bone walls). It never changes a 1v1 outcome, because the fight is already decided when it procs. Area and cleave attackers were measured to pay the same per-kill tax as single-target attackers — multi-kills in one action trigger the grip once, never stacked.</p>
+    <p><strong>How the gated plague plays:</strong> a real Zombie's kill starts the horde 50% of the time; from there every raised body keeps the live 100% chain, so the horde grows at exactly live speed once it exists. The gate never decides a duel — the proc fires on the killing blow, when the fight is already won — what it prices is the free body the winner always used to collect on top of winning. Gating only the first rise is what lets every raised body stay completely untouched: without a plague ability at all, Zombie measures a fair duelist that collapses in group fights, and at a 100% first rise it tops the pool — the gate is the single dial between those poles.</p>
+    <details><summary style="cursor:pointer;font-weight:700;color:#075985;padding:6px 0;">Why each change, unit by unit</summary>
     <div class="table-wrap">
       <table>
-        <caption>Proposed stats (changes in bold)</caption>
+        <caption>Reasoning behind each recommended change</caption>
         <thead>
-          <tr><th scope="col">Unit</th><th scope="col">Live (v0.3.11.4021)</th><th scope="col">Proposed</th><th scope="col">Why</th></tr>
+          <tr><th scope="col">Unit</th><th scope="col">Why</th></tr>
         </thead>
         <tbody>
-          <tr><th scope="row">Hammer</th><td>3 atk / 7 HP</td><td>3 / <strong>8</strong>, <strong>50% chance of an immediate extra swing on kill</strong> (Option A: no swing)</td><td>The pool racing it evenly removes its dominance (its matchups land near 50% instead of it beating everything); the on-kill swing gives it a mechanic of its own and lifts it from the bottom half to mid-pack.</td></tr>
-          <tr><th scope="row">Nail</th><td>2/6, 1 armor, Piercing</td><td>2/<strong>8</strong>, 1 armor, Piercing</td><td>Identity untouched. In a pool of 3-attack peers, armor stops polarizing, and the extra health keeps it useful as fights grow.</td></tr>
-          <tr><th scope="row">Skeleton</th><td>2/7, Evade Ranged 50%</td><td><strong>3</strong>/7, Evade Ranged <strong>35%</strong></td><td>Gets its original 3 attack back; the anti-ranged counter softens from a hard lock to a strong lean. The 35% is a suggestion, not a hard rule — anything meaningfully below 50% achieves the same shape.</td></tr>
-          <tr><th scope="row">Zombie</th><td>3/6, Last Strike, Plague</td><td>3/<strong>7</strong>, <strong>normal initiative</strong>, Plague; raised zombies spawn at <strong>2/5</strong></td><td>Last Strike made its 1v1s all-or-nothing. Normal initiative plus 7 HP makes them real fights; the weaker raised zombie trims the horde snowball. Zombie Bear and Zombie Troll are unchanged.</td></tr>
-          <tr><th scope="row">Elf Scout</th><td>3/5, 10% evade, First Strike, Move 2</td><td>3/5, <strong>25% evade</strong></td><td>Keeps 5 HP (the 4-HP beta version crosses two one-shot/two-shot breakpoints at once); evade is the fine-grained survivability dial.</td></tr>
-          <tr><th scope="row">Acolyte</th><td>2/6, Last Strike, Reap (unlimited stacking)</td><td><strong>3</strong>/<strong>7</strong>, <strong>normal initiative</strong>, Reap capped at <strong>2 charges</strong> per fight</td><td>Bounding the attack stack: alone it now fights at ~50%; in big fights it is strong (76% at 6v6) instead of automatic (99%+).</td></tr>
-          <tr><th scope="row">Ranger</th><td>2/4, 10% evade (beta: 20%)</td><td><strong>3</strong>/4, <strong>20% evade</strong></td><td>Attack 3 restores its punch (the pre-rework value); 20% evade keeps the test build's survivability buff.</td></tr>
+          <tr><th scope="row">Hammer</th><td>Statline unchanged from live; the pool racing it evenly removes its dominance, and the on-kill swing (an existing mechanic at half rate — swings chain, as in the live game) gives it an identity and lifts it to mid-pack.</td></tr>
+          <tr><th scope="row">Nail</th><td>Identity untouched, one more health point. Deliberately the weakest basic in big brawls; its role is armor utility — two Nails beat a Skeleton Knight outright, and Squire's ambush opener remains a clean answer to Nail walls.</td></tr>
+          <tr><th scope="row">Skeleton</th><td>Gets its original 3 attack back; ranged evade softens from a hard lock to a lean. Lodged makes felling it in melee cost tempo: it never touches 1v1 outcomes, taxes focus-fire in groups, and ranged removal avoids the grip — the two halves cover both lanes without either being a hard counter.</td></tr>
+          <tr><th scope="row">Zombie</th><td>Last Strike made its 1v1s all-or-nothing; attacking in the normal beat order plus 7 HP makes them real fights. The plague's first rise is gated at 50%; the raised horde itself is untouched and chains at live speed. Nothing else that raises zombies changes.</td></tr>
+          <tr><th scope="row">Acolyte</th><td>Every 100% design that keeps the attack-Reap unlimited was measured and saturates big fights regardless of the statline carrying it; keeping only the healing half is the one deterministic shape that balances. Every death still pays — the Acolyte grows fat on souls instead of sharp — it holds the pool's lowest one-sided rate, and the change is a single ability-list cell, so the Magi and Possessed Acolyte keep the full harvest untouched. A measured Magus check confirmed durable Acolytes feed an allied High Magus no more than the other designs do.</td></tr>
+          <tr><th scope="row">Elf Scout</th><td>Keeps 5 HP (the 4-HP beta version crosses two one-shot/two-shot breakpoints at once); evade is the fine-grained survivability dial.</td></tr>
+          <tr><th scope="row">Ranger</th><td>Attack 3 restores its punch (the pre-rework value); 20% evade keeps the test build's survivability buff.</td></tr>
         </tbody>
       </table>
     </div>
     </details>
-    <p>The statlines are chosen so the melee basics trade in equal hit counts — including through Nail's armor. Twelve of the fifteen melee 1v1s land within one point of 50/50; the only spread is Elf Scout's intended evade edges (it wins 56-58% of three matchups and 43% against Acolyte). Group fights then differ by each unit's mechanic.</p>
-    <h3>The other options: A, C, and D</h3>
-    <p><strong>Option A — the most balanced state:</strong> identical to Option B with the Hammer swing removed. It posts the single highest Balance Score (72.8 vs 71.7) but more one-sided matchups (9.3% stomps vs 5.3%), and Hammer returns to the bottom half of the pool with no mechanic of its own. nodnarb21's preference is Option B; Option A is the pick if no new Hammer behavior is wanted.</p>
-    <p>The two lighter options are adoptable fallbacks, not just diagnostics. <strong>Option C</strong> keeps the stat changes and the weaker raised zombies but drops both the Reap charge limit and the Hammer swing (Reap keeps unlimited stacking). <strong>Option D</strong> also leaves raised zombies at full strength, making it a stats-and-timing-only change with no ability edits beyond the evade-ranged percentage. Both remain far ahead of every live and historical state; the cost is that Acolyte's 6v6 win rate climbs back toward ~99% (melee-only Balance Score 66.8 for Option C and 66.3 for Option D, vs 71.7 for Option B). If the developers prefer fewer mechanic changes, either is a defensible first step, with the Reap limit and the swing available later as follow-up dials.</p>
-    <p><strong>What was tried and rejected for Hammer:</strong> Ambush (the Knight/Squire opener) was tested first. Its 4-damage opening swing two-shots any 7-health unit, so making it fair forced three other units up to 8 health — and that extra health fed Acolyte's and Zombie's big-fight strength, costing about six balance points overall. The on-kill swing gives Hammer the same "finally has a mechanic" payoff without touching anyone else's stats. Taunt and targeting-override mechanics were also considered and dropped for changing the game's targeting behavior too broadly.</p>
-    <p><strong>On Ranger:</strong> the 3 attack / 4 health / 20% evade line is simply the measured suggestion — the author has no preference among reasonable Ranger buffs, and any of the tested variants works alongside this set.</p>
+    <p><strong>What was tried and rejected:</strong> Ambush on Hammer (its 4-damage opener forced three other units up to 8 health, costing about six balance points). Taunt and targeting-override mechanics (too much influence on targeting). Reactive on-hit abilities — counterattacks and stun-when-struck — which turned out to have no viable setting: at rates high enough to notice they break even 1v1s and punish multi-hit attackers hardest, and at safe rates they fire too rarely to matter. Moving the trigger to the unit's death (Lodged) is what escaped that trap. An 8th health point on Hammer or Nail was also measured and found to buy almost nothing once the group-fight engines are proc-tuned. For Acolyte, the whole 100%-reliability space was measured before settling on the healing-half design: guaranteed one-resource-per-death variants (attack-only, attack-or-HP splits at either exchange rate) all land the Acolyte at .69-.75 with big fights at .90+; a low-attack statline with an Ambush opener recreates the live helpless-small/unbeatable-big curve in both directions; a self-consuming +1-attack/&minus;1-HP harvest annihilates its own carrier (each victory can kill the winner on the enemy's dying breath); and a 3-stack cap re-ignites the big-fight inferno where the 2-stack cap does not. For Zombie, three whole families were measured and rejected before settling on gating the first rise: uniform proc-gating with a weakened new "Lesser Zombie" unit (balanced the row, but added a unit and slowed the horde everywhere); statline deficits (a 3/6 Zombie starves the very engine it has to ignite, and a 4/6 bruiser balances on average only by being helpless early and dominant late); and weaker raised bodies (below 2 attack the chain almost never advances — a decorative horde).</p>
   </section>
 
   <section aria-labelledby="stat-configs">
     <h2 id="stat-configs">Exact Stat Configurations</h2>
     <details><summary style="cursor:pointer;font-weight:700;color:#075985;padding:6px 0;">Show the exact stats for every configuration</summary>
-    <p>Every configuration at a glance: attack/health first, then armor, abilities, attack timing, and evade chances, all spelled out. "Raised Zombie" is the unit Zombie Plague summons. The workbook's <em>Sim Stat Configurations</em> sheet has the same data in full columns, including exact ability formulas.</p>
+    <p>Every configuration at a glance: attack/health first, then armor, abilities, attack timing, and evade chances, all spelled out. "Plague-raised Zombie" is the unit Zombie Plague summons in each state — under the proposal this is the existing Summoned Zombie, unchanged from live. The workbook's <em>Sim Stat Configurations</em> sheet has the same data in full columns, including exact ability formulas.</p>
     <div class="table-wrap">
       <table>
         <caption>Simulated unit configurations by state</caption>
@@ -534,16 +568,17 @@
             <th scope="col">Elf Scout</th>
             <th scope="col">Acolyte</th>
             <th scope="col">Ranger</th>
-            <th scope="col">Raised Zombie</th>
+            <th scope="col">Plague-raised Zombie</th>
             <th scope="col">Reap Rules</th>
           </tr>
         </thead>
         <tbody>
-    <tr><th scope="row">Option A: Stats + Weaker Raised Zombies + Reap Limit (2026-08-04)</th><td>3/8</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>2/5, Zombie Plague</td><td>Reap capped at 2 charges each</td></tr>
-    <tr><th scope="row">Recommended Proposal (Option B): Stats + Weaker Raised Zombies + Reap Limit + Hammer Berserk 50% (2026-08-04)</th><td>3/8, Berserk 50% on-kill swing</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>2/5, Zombie Plague</td><td>Reap capped at 2 charges each</td></tr>
-    <tr><th scope="row">Option C: Stats + Weaker Raised Zombies (2026-08-04)</th><td>3/8</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>2/5, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
-    <tr><th scope="row">Option D: Stats and Timing Only (2026-08-04)</th><td>3/8</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>3/7, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
-    <tr><th scope="row">Nodnarb21 FinalIteration (2025-09-03)</th><td>3/7, Last Strike</td><td>2/6, 1 armor, Piercing, Last Strike</td><td>2/7, 35% ranged evade</td><td>3/6, Zombie Plague</td><td>3/4, First Strike, 20% evade</td><td>2/6</td><td>3/4, 10% evade</td><td>3/6, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
+    <tr><th scope="row">Recommended (Round 2): 7-HP Pool + Per-Unit Dials (2026-08-06)</th><td>3/7, Berserk 50% on-kill swing</td><td>2/7, 1 armor, Piercing</td><td>3/7, 35-50% ranged evade, Lodged 75% (melee killer is stunned)</td><td>3/7, Zombie Plague 50%</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>3/6, Last Strike, Zombie Plague</td><td>healing half only: +1 HP per death, live 100%, unlimited; attack half removed</td></tr>
+    <tr><th scope="row">Option A: Stats + Weaker Raised Zombies + Reap Limit (2026-08-04)</th><td>3/8</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35-50% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>2/5, Zombie Plague</td><td>Reap capped at 2 charges each</td></tr>
+    <tr><th scope="row">Option B: Stats + Weaker Raised Zombies + Reap Limit + Hammer Berserk 50% (2026-08-04)</th><td>3/8, Berserk 50% on-kill swing</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35-50% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>2/5, Zombie Plague</td><td>Reap capped at 2 charges each</td></tr>
+    <tr><th scope="row">Option C: Stats + Weaker Raised Zombies (2026-08-04)</th><td>3/8</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35-50% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>2/5, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
+    <tr><th scope="row">Option D: Stats and Timing Only (2026-08-04)</th><td>3/8</td><td>2/8, 1 armor, Piercing</td><td>3/7, 35-50% ranged evade</td><td>3/7, Zombie Plague</td><td>3/5, First Strike, 25% evade</td><td>3/7</td><td>3/4, 20% evade</td><td>3/7, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
+    <tr><th scope="row">Nodnarb21 FinalIteration (2025-09-03)</th><td>3/7, Last Strike</td><td>2/6, 1 armor, Piercing, Last Strike</td><td>2/7, 35-50% ranged evade</td><td>3/6, Zombie Plague</td><td>3/4, First Strike, 20% evade</td><td>2/6</td><td>3/4, 10% evade</td><td>3/6, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
     <tr><th scope="row">Tinbeard Test Build v0.3.11.4135 (2026-07-29)</th><td>3/6</td><td>2/5, 1 armor, Piercing</td><td>2/7, 50% ranged evade</td><td>3/6, Last Strike, Zombie Plague</td><td>3/4, First Strike, 10% evade</td><td>2/6, Last Strike</td><td>2/4, 20% evade</td><td>3/6, Last Strike, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
     <tr><th scope="row">Low Median (v0.3.3, 2025-09-30)</th><td>2/5</td><td>1/5, 1 armor, Piercing, Last Strike</td><td>2/5, 50% ranged evade</td><td>2/5, Zombie Plague</td><td>2/4, First Strike, 10% evade</td><td>2/5</td><td>2/4, 10% evade</td><td>2/5, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
     <tr><th scope="row">Piopavel Iteration (2026-08-03)</th><td>1/7, Piercing, Ambush +2 first attack</td><td>2/5, 1 armor, Piercing</td><td>2/7, 50% ranged evade</td><td>3/6, Last Strike, Zombie Plague</td><td>3/4, First Strike, 20% evade</td><td>2/6, Last Strike</td><td>2/5, 20% evade</td><td>3/6, Last Strike, Zombie Plague</td><td>standard Reap; Hammer has Ambush(2)</td></tr>
@@ -557,37 +592,10 @@
 
 
 
-  <section aria-labelledby="engine-formulas">
-    <h2 id="engine-formulas">Engine Formulas for the Ability Changes</h2>
-    <details><summary style="cursor:pointer;font-weight:700;color:#075985;padding:6px 0;">Show the ability formulas (for the developers)</summary>
-    <p>Every ability change in the proposals is expressed in the game's own formula language, ready to enter into the engine as an ability definition. Unchanged abilities keep their live formulas. Stat, initiative, and evade-percent changes are plain unit-data fields and are listed in the stat configuration table above.</p>
-    <div class="table-wrap">
-      <table>
-        <caption>Ability definitions used by the proposed states</caption>
-        <thead>
-          <tr>
-            <th scope="col">Ability Instance</th>
-            <th scope="col">Formula (rules text)</th>
-            <th scope="col">Used By</th>
-          </tr>
-        </thead>
-        <tbody>
-    <tr><th scope="row">Ambush(2)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">BuffOnEvent(PreFirstAttackInRoom 1.0 SELF UNLIMITED Buff(BEAT 1 ATTACK 2))</code></td><td>Piopavel Iteration</td></tr>
-    <tr><th scope="row">Berserk(50%)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">AdditionalAttack(OnKill 0.5 RANDOMTAUNTAWARE_ENEMY)</code></td><td>Recommended Proposal</td></tr>
-    <tr><th scope="row">RangedEvade(35%)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">RangedEvade(0.35)</code></td><td>Nodnarb21 FinalIteration; Option A: Stats + Weaker Raised Zombies + Reap Limit; Option C: Stats + Weaker Raised Zombies; Option D: Stats and Timing Only; Recommended Proposal</td></tr>
-    <tr><th scope="row">RangedEvade(75%)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">RangedEvade(0.75)</code></td><td>Main pre-v0.3.3</td></tr>
-    <tr><th scope="row">ReapDamage(1)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">BuffOnEvent(OnUnitDied 1.0 SELF 2 Buff(EVENT OnDealtOutDamage ATTACK 1))</code></td><td>Option A: Stats + Weaker Raised Zombies + Reap Limit; Recommended Proposal</td></tr>
-    <tr><th scope="row">ReapTempBuff(0,1)</th><td><code style="font-family:Consolas,monospace;font-size:0.86rem;background:var(--band);padding:2px 6px;border-radius:4px;display:inline-block;">BuffOnEvent(OnUnitDied 1.0 SELF 2 Buff(ROUND 1 HITPOINTS 1))</code></td><td>Option A: Stats + Weaker Raised Zombies + Reap Limit; Recommended Proposal</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </details>
-  </section>
-
   <section aria-labelledby="proposal-units">
     <h2 id="proposal-units">Proposal Unit Analysis</h2>
     <details><summary style="cursor:pointer;font-weight:700;color:#075985;padding:6px 0;">Show the proposal&#8217;s per-unit numbers</summary>
-    <p>Average power is each unit's mean win rate against the other five across all team sizes (0.500 is perfectly even). The proposal's strongest-to-weakest gap is 0.341 — against 0.809 live — with the remaining tails explained by scaling identity: Reap and plague scale up in big fights, armor and vanilla statlines do not.</p>
+    <p>Average power is each unit's mean win rate against the other five across all team sizes (0.500 is perfectly even). The proposal's strongest-to-weakest gap is 0.336 — against 0.809 live — with the remaining tails explained by scaling identity: Reap and plague scale up in big fights, armor and vanilla statlines do not.</p>
     <div class="table-wrap">
       <table>
         <caption>Proposal unit ranking (melee-only)</caption>
@@ -606,63 +614,63 @@
         <tbody>
       <tr>
         <td>1</td>
-        <th scope="row">Zombie</th>
-        <td><span class="tag">Balanced</span></td>
-        <td><div class="bar-wrap" role="img" aria-label="0.645"><span class="bar bar-good" style="width:64.50%"></span><span class="bar-label">0.645</span></div></td>
-        <td>+0.193</td>
-        <td>0.155</td>
-        <td>14 / 10 / 1</td>
+        <th scope="row">Acolyte</th>
+        <td><span class="tag">Scale-sensitive</span></td>
+        <td><div class="bar-wrap" role="img" aria-label="0.617"><span class="bar bar-good" style="width:61.70%"></span><span class="bar-label">0.617</span></div></td>
+        <td>+0.364</td>
+        <td>0.178</td>
+        <td>13 / 8 / 4</td>
         <td>1 / 0</td>
       </tr>
       <tr>
         <td>2</td>
-        <th scope="row">Acolyte</th>
+        <th scope="row">Skeleton</th>
         <td><span class="tag">Balanced</span></td>
-        <td><div class="bar-wrap" role="img" aria-label="0.633"><span class="bar bar-good" style="width:63.30%"></span><span class="bar-label">0.633</span></div></td>
-        <td>+0.249</td>
-        <td>0.173</td>
-        <td>13 / 11 / 1</td>
-        <td>3 / 0</td>
+        <td><div class="bar-wrap" role="img" aria-label="0.548"><span class="bar bar-good" style="width:54.80%"></span><span class="bar-label">0.548</span></div></td>
+        <td>-0.001</td>
+        <td>0.136</td>
+        <td>14 / 6 / 5</td>
+        <td>0 / 0</td>
       </tr>
       <tr>
         <td>3</td>
         <th scope="row">Hammer</th>
         <td><span class="tag">Balanced</span></td>
-        <td><div class="bar-wrap" role="img" aria-label="0.544"><span class="bar bar-good" style="width:54.40%"></span><span class="bar-label">0.544</span></div></td>
-        <td>+0.058</td>
-        <td>0.150</td>
-        <td>13 / 7 / 5</td>
+        <td><div class="bar-wrap" role="img" aria-label="0.546"><span class="bar bar-good" style="width:54.60%"></span><span class="bar-label">0.546</span></div></td>
+        <td>+0.034</td>
+        <td>0.113</td>
+        <td>13 / 10 / 2</td>
         <td>0 / 0</td>
       </tr>
       <tr>
         <td>4</td>
-        <th scope="row">Elf Scout</th>
+        <th scope="row">Zombie</th>
         <td><span class="tag">Balanced</span></td>
-        <td><div class="bar-wrap" role="img" aria-label="0.455"><span class="bar bar-good" style="width:45.50%"></span><span class="bar-label">0.455</span></div></td>
-        <td>-0.033</td>
-        <td>0.164</td>
-        <td>7 / 4 / 14</td>
+        <td><div class="bar-wrap" role="img" aria-label="0.531"><span class="bar bar-good" style="width:53.10%"></span><span class="bar-label">0.531</span></div></td>
+        <td>-0.012</td>
+        <td>0.151</td>
+        <td>11 / 9 / 5</td>
         <td>0 / 0</td>
       </tr>
       <tr>
         <td>5</td>
-        <th scope="row">Skeleton</th>
+        <th scope="row">Elf Scout</th>
         <td><span class="tag">Balanced</span></td>
-        <td><div class="bar-wrap" role="img" aria-label="0.404"><span class="bar bar-good" style="width:40.40%"></span><span class="bar-label">0.404</span></div></td>
-        <td>-0.185</td>
-        <td>0.146</td>
-        <td>1 / 14 / 10</td>
-        <td>0 / 1</td>
+        <td><div class="bar-wrap" role="img" aria-label="0.445"><span class="bar bar-good" style="width:44.50%"></span><span class="bar-label">0.445</span></div></td>
+        <td>-0.075</td>
+        <td>0.145</td>
+        <td>5 / 1 / 19</td>
+        <td>0 / 0</td>
       </tr>
       <tr>
         <td>6</td>
         <th scope="row">Nail</th>
         <td><span class="tag">Scale-sensitive</span></td>
-        <td><div class="bar-wrap" role="img" aria-label="0.319"><span class="bar bar-good" style="width:31.90%"></span><span class="bar-label">0.319</span></div></td>
-        <td>-0.282</td>
-        <td>0.157</td>
-        <td>0 / 8 / 17</td>
-        <td>0 / 3</td>
+        <td><div class="bar-wrap" role="img" aria-label="0.313"><span class="bar bar-good" style="width:31.30%"></span><span class="bar-label">0.313</span></div></td>
+        <td>-0.311</td>
+        <td>0.123</td>
+        <td>0 / 4 / 21</td>
+        <td>0 / 1</td>
       </tr>
         </tbody>
       </table>
@@ -766,7 +774,7 @@
 
   <section aria-labelledby="by-size">
     <h2 id="by-size">Balance by Team Size</h2>
-    <p>The proposal stays balanced at every fight size instead of falling apart as fights get bigger. Melee-only Balance Score by team size (1v1 / 2v2 / 3v3 / 4v4 / 6v6) — proposal: 95.4 / 77.9 / 69.1 / 63.3 / 52.8; current patch: 2.5 / 12.5 / 24.7 / 24.4 / 20.7. Full per-size grids are in the workbook's Sim Matrices sheet.</p>
+    <p>The proposal stays balanced at every fight size instead of falling apart as fights get bigger. Melee-only Balance Score by team size (1v1 / 2v2 / 3v3 / 4v4 / 6v6) — proposal: 94.9 / 81.2 / 76.2 / 67.4 / 48.3; current patch: 2.5 / 12.5 / 24.7 / 24.4 / 20.7. Full per-size grids are in the workbook's Sim Matrices sheet.</p>
   </section>
 
   <footer>
