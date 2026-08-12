@@ -229,7 +229,7 @@
   </section>
   <script>
   document.addEventListener('DOMContentLoaded', function () {
-    var summaryText = "This is the Vanguard Exiles unlimited unit balance report and rebalance proposal, August 2026. The report compares eleven different stat configurations for the games seven basic units, all measured the same way: simulated fights between every pair of units, at team sizes from one versus one up to six versus six. The headline finding: in the current live patch, most basic unit matchups are effectively decided before the fight starts. About 72 percent of matchups between the six melee basics are stomps, meaning one side wins at least nine times out of ten, and the overall balance score is 17 out of a possible one hundred. Hammer dominates almost everything, while Acolyte flips from helpless in small fights to nearly unbeatable in big ones. The recommended set is the Round Two proposal: one composition where nothing sits above seven health and no ability gains a hard limit. A few attack and health values change, attack timing for two units, evade percentages, and the group fight engines are tuned by proc rates: the plague's first rise is gated, so a real zombie's kill starts the horde half the time, while every zombie it raises keeps the live one hundred percent chain untouched. The Acolyte keeps only Reap's healing half — every death still feeds it one health, guaranteed and unlimited — while the attack half stays with the Magus units that define it. Hammer gains a half chance extra swing on kills, and Skeleton gains Lodged: a melee attacker that fells it is usually stunned for a beat. The result is that almost every one versus one between the melee basics becomes a genuine coin flip: every melee duel not involving Elf Scout lands within one point of fifty fifty, Scout's evade edges are the only intended spread, and group fights stay different from each other through the units mechanics. Under the proposal, the balance score rises to 74, stomps fall to 1 percent, and 61 percent of matchups land in the playable band. Every unit's row comes with measured alternatives, so any single mechanism can be swapped without re-deriving the set, and the first round's Options A through D remain in the ranking for comparison. Zombie and Skeleton land at equal power as different tools: one clusters and snowballs kills, the other spreads and taxes its own removal. The full win rate matrices, exact stat configurations, and per-cell sample sizes are in the downloadable workbook. Thanks for listening.";
+    var summaryText = "This is the Vanguard Exiles unlimited unit balance report and rebalance proposal, August 2026. The report compares twelve different stat configurations for the games seven basic units, all measured the same way: simulated fights between every pair of units, at team sizes from one versus one up to six versus six. The headline finding: in the current live patch, most basic unit matchups are effectively decided before the fight starts. About 72 percent of matchups between the six melee basics are stomps, meaning one side wins at least nine times out of ten, and the overall balance score is 17 out of a possible one hundred. Hammer dominates almost everything, while Acolyte flips from helpless in small fights to nearly unbeatable in big ones. The recommended set is the Round Two proposal: one composition where nothing sits above seven health and no ability gains a hard limit. A few attack and health values change, attack timing for two units, evade percentages, and the group fight engines are tuned by proc rates: the plague's first rise is gated, so a real zombie's kill starts the horde half the time, while every zombie it raises keeps the live one hundred percent chain untouched. The Acolyte keeps only Reap's healing half — every death still feeds it one health, guaranteed and unlimited — while the attack half stays with the Magus units that define it. Hammer gains a half chance extra swing on kills, and Skeleton gains Lodged: a melee attacker that fells it is usually stunned for a beat. The result is that almost every one versus one between the melee basics becomes a genuine coin flip: every melee duel not involving Elf Scout lands within one point of fifty fifty, Scout's evade edges are the only intended spread, and group fights stay different from each other through the units mechanics. Under the proposal, the balance score rises to 74, stomps fall to 1 percent, and 61 percent of matchups land in the playable band. Every unit's row comes with measured alternatives, so any single mechanism can be swapped without re-deriving the set, and the first round's Options A through D remain in the ranking for comparison. Zombie and Skeleton land at equal power as different tools: one clusters and snowballs kills, the other spreads and taxes its own removal. The full win rate matrices, exact stat configurations, and per-cell sample sizes are in the downloadable workbook. Thanks for listening.";
     var supported = ('speechSynthesis' in window);
     if (!supported) {
       var s = document.getElementById('tts-status');
@@ -480,7 +480,7 @@
       <td><div class="bar-wrap" role="img" aria-label="38.5"><span class="bar bar-warn" style="width:77.00%"></span><span class="bar-label">38.5</span></div></td>
       <td>28.0%</td>
       <td>42.7%</td>
-      <td>The current test build; an improvement, but Nail becomes the new best unit.</td>
+      <td>The previous test build; an improvement, but Nail becomes the new best unit.</td>
     </tr>
     <tr>
       <td>8</td>
@@ -492,6 +492,14 @@
     </tr>
     <tr>
       <td>9</td>
+      <th scope="row">Piopavel Test Build v0.3.11.4191 (2026-08-12)</th>
+      <td><div class="bar-wrap" role="img" aria-label="36.9"><span class="bar bar-warn" style="width:73.80%"></span><span class="bar-label">36.9</span></div></td>
+      <td>28.0%</td>
+      <td>42.7%</td>
+      <td>The installed test build (extracted 2026-08-12): Hammer gains the on-kill swing at 3/6. A clear improvement over live, in the same band as the previous beta — but Elf Scout becomes the best unit and Acolyte and Zombie stay polarized.</td>
+    </tr>
+    <tr>
+      <td>10</td>
       <th scope="row">Piopavel Iteration (2026-08-03)</th>
       <td><div class="bar-wrap" role="img" aria-label="33.4"><span class="bar bar-warn" style="width:66.80%"></span><span class="bar-label">33.4</span></div></td>
       <td>25.3%</td>
@@ -499,7 +507,7 @@
       <td>Piopavel's version, which keeps the basics weak overall; better than live, but small stat numbers still force lopsided fights.</td>
     </tr>
     <tr>
-      <td>10</td>
+      <td>11</td>
       <th scope="row">Main v0.3.11.4021 (current, 2026-04-15)</th>
       <td><div class="bar-wrap" role="img" aria-label="17.0"><span class="bar bar-bad" style="width:34.00%"></span><span class="bar-label">17.0</span></div></td>
       <td>6.7%</td>
@@ -507,7 +515,7 @@
       <td>Current patch: lowest balance score, highest stomp rate.</td>
     </tr>
     <tr>
-      <td>11</td>
+      <td>12</td>
       <th scope="row">Main pre-v0.3.3 (until 2025-09-29)</th>
       <td><div class="bar-wrap" role="img" aria-label="13.7"><span class="bar bar-bad" style="width:27.40%"></span><span class="bar-label">13.7</span></div></td>
       <td>6.7%</td>
@@ -578,6 +586,7 @@
     <tr><th scope="row">Tinbeard Test Build v0.3.11.4135 (2026-07-29)</th><td>3/6</td><td>2/5, 1 armor, Piercing</td><td>2/7, 50% ranged evade</td><td>3/6, Last Strike, Zombie Plague</td><td>3/4, First Strike, 10% evade</td><td>2/6, Last Strike</td><td>2/4, 20% evade</td><td>3/6, Last Strike, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
     <tr><th scope="row">Low Median (v0.3.3, 2025-09-30)</th><td>2/5</td><td>1/5, 1 armor, Piercing, Last Strike</td><td>2/5, 50% ranged evade</td><td>2/5, Zombie Plague</td><td>2/4, First Strike, 10% evade</td><td>2/5</td><td>2/4, 10% evade</td><td>2/5, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
     <tr><th scope="row">Piopavel Iteration (2026-08-03)</th><td>1/7, Piercing, Ambush +2 first attack</td><td>2/5, 1 armor, Piercing</td><td>2/7, 50% ranged evade</td><td>3/6, Last Strike, Zombie Plague</td><td>3/4, First Strike, 20% evade</td><td>2/6, Last Strike</td><td>2/5, 20% evade</td><td>3/6, Last Strike, Zombie Plague</td><td>standard Reap; Hammer has Ambush(2)</td></tr>
+    <tr><th scope="row">Piopavel Test Build v0.3.11.4191 (2026-08-12)</th><td>3/6, Berserk 50% on-kill swing</td><td>2/5, 1 armor, Piercing</td><td>2/7, 50% ranged evade</td><td>3/6, Last Strike, Zombie Plague</td><td>3/4, First Strike, 20% evade</td><td>2/6, Last Strike</td><td>2/5, 10% evade</td><td>3/6, Last Strike, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
     <tr><th scope="row">Main pre-v0.3.3 (until 2025-09-29)</th><td>3/7</td><td>1/8, 1 armor</td><td>3/5, 75% ranged evade</td><td>2/6, Last Strike, Zombie Plague</td><td>3/5, First Strike, 10% evade</td><td>2/6, Last Strike</td><td>3/4, 10% evade</td><td>2/6, Last Strike, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
     <tr><th scope="row">Main v0.3.11.4021 (current, 2026-04-15)</th><td>3/7</td><td>2/6, 1 armor, Piercing</td><td>2/7, 50% ranged evade</td><td>3/6, Last Strike, Zombie Plague</td><td>3/5, First Strike, 10% evade</td><td>2/6, Last Strike</td><td>2/4, 10% evade</td><td>3/6, Last Strike, Zombie Plague</td><td>standard (unlimited stacking)</td></tr>
         </tbody>
