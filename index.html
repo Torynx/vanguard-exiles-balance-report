@@ -354,7 +354,7 @@
 
   <section aria-labelledby="changes">
     <h2 id="changes">Proposed Changes at a Glance</h2>
-    <p>The complete proposed set — every stat and ability, final values. Anything not listed here is unchanged from live.</p>
+    <p>The complete proposed set — every stat and ability, final values. Anything not listed here is unchanged from live. <span style="color:var(--muted); font-size:0.85rem; white-space:nowrap;">Table last updated 2026-08-16.</span></p>
     <div class="table-wrap">
       <table>
         <caption>Final proposed stats and abilities, per unit</caption>
@@ -362,12 +362,12 @@
           <tr><th scope="col">Unit</th><th scope="col">Attack</th><th scope="col">HP</th><th scope="col">Armor</th><th scope="col">Attack Timing</th><th scope="col">Evade</th><th scope="col">Abilities</th></tr>
         </thead>
         <tbody>
-          <tr><th scope="row">Hammer</th><td>3</td><td>7</td><td>0</td><td>Normal</td><td>&mdash;</td><td>Berserk 50%: when it kills, 50% chance of an immediate extra swing (swings chain)</td></tr>
+          <tr><th scope="row">Hammer</th><td>3</td><td>7</td><td>0</td><td>Normal</td><td>&mdash;</td><td>Berserk 50%: when it kills, 50% chance of an immediate extra swing (swings chain)<br><code style="font-family:Consolas,monospace; font-size:0.78rem; background:var(--band); padding:1px 5px; border-radius:4px; white-space:normal; overflow-wrap:anywhere; word-break:break-word;">AdditionalAttack(OnKill 0.5 RANDOMTAUNTAWARE_ENEMY)</code></td></tr>
           <tr><th scope="row">Nail</th><td>2</td><td>7</td><td>1</td><td>Normal</td><td>&mdash;</td><td>Piercing</td></tr>
-          <tr><th scope="row">Skeleton</th><td>3</td><td>7</td><td>0</td><td>Normal</td><td>35-50% vs ranged only</td><td>Lodged 75%: a unit that kills it with a melee attack is stunned 75% of the time; ranged kills are exempt</td></tr>
-          <tr><th scope="row">Zombie</th><td>3</td><td>7</td><td>0</td><td>Normal</td><td>&mdash;</td><td>Zombie Plague 50%: when it kills a non-Undead unit, 50% chance to raise a Summoned Zombie</td></tr>
-          <tr><th scope="row">Summoned Zombie</th><td>3</td><td>6</td><td>0</td><td>Last Strike</td><td>&mdash;</td><td>Zombie Plague 100%: when it kills a non-Undead unit, always raises another Summoned Zombie. Every field unchanged from live</td></tr>
-          <tr><th scope="row">Acolyte</th><td>3</td><td>7</td><td>0</td><td>Normal</td><td>&mdash;</td><td>Reap, healing half: +1 HP per unit death, 100% chance, unlimited stacking. The attack half (ReapDamage) is removed from the Acolyte only</td></tr>
+          <tr><th scope="row">Skeleton</th><td>3</td><td>7</td><td>0</td><td>Normal</td><td>35-50% vs ranged only<br><code style="font-family:Consolas,monospace; font-size:0.78rem; background:var(--band); padding:1px 5px; border-radius:4px; white-space:normal; overflow-wrap:anywhere; word-break:break-word;">RangedEvade(0.35)</code></td><td>Lodged 75%: a unit that kills it with a melee attack is stunned 75% of the time; ranged kills are exempt<br><code style="font-family:Consolas,monospace; font-size:0.78rem; background:var(--band); padding:1px 5px; border-radius:4px; white-space:normal; overflow-wrap:anywhere; word-break:break-word;">AddTempAbility(OnDeath 0.75 CAUSE Stunned)</code></td></tr>
+          <tr><th scope="row">Zombie</th><td>3</td><td>7</td><td>0</td><td>Normal</td><td>&mdash;</td><td>Zombie Plague 50%: when it kills a non-Undead unit, 50% chance to raise a Summoned Zombie<br><code style="font-family:Consolas,monospace; font-size:0.78rem; background:var(--band); padding:1px 5px; border-radius:4px; white-space:normal; overflow-wrap:anywhere; word-break:break-word;">Spawn(If TargetUnitKeyword(NONE Undead) OnKill 0.5 ATTACKED_ENEMY 1 SummonedZombie)</code></td></tr>
+          <tr><th scope="row">Summoned Zombie</th><td>3</td><td>6</td><td>0</td><td>Last Strike</td><td>&mdash;</td><td>Zombie Plague 100%: when it kills a non-Undead unit, always raises another Summoned Zombie. Every field unchanged from live<br><code style="font-family:Consolas,monospace; font-size:0.78rem; background:var(--band); padding:1px 5px; border-radius:4px; white-space:normal; overflow-wrap:anywhere; word-break:break-word;">Spawn(If TargetUnitKeyword(NONE Undead) OnKill 1.0 ATTACKED_ENEMY 1 SummonedZombie)</code></td></tr>
+          <tr><th scope="row">Acolyte</th><td>3</td><td>7</td><td>0</td><td>Normal</td><td>&mdash;</td><td>Reap, healing half: +1 HP per unit death, 100% chance, unlimited stacking. The attack half (ReapDamage) is removed from the Acolyte only<br><code style="font-family:Consolas,monospace; font-size:0.78rem; background:var(--band); padding:1px 5px; border-radius:4px; white-space:normal; overflow-wrap:anywhere; word-break:break-word;">BuffOnEvent(OnUnitDied 1.0 SELF UNLIMITED Buff(ROUND 1 HITPOINTS 1))</code></td></tr>
           <tr><th scope="row">Elf Scout</th><td>3</td><td>5</td><td>0</td><td>First Strike</td><td>25%</td><td>&mdash;</td></tr>
           <tr><th scope="row">Ranger</th><td>3</td><td>4</td><td>0</td><td>Normal</td><td>20%</td><td>Ranged attacker</td></tr>
         </tbody>
